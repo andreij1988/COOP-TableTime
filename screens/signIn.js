@@ -10,29 +10,32 @@ import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 export default function App() {
 
-  const [userFirstName, setUserFirstName] = useState("")
-  const [userLastName, setUserLastName] = useState("")
   const [userName, setUserName] = useState("")
   const [userPassword, setUserPassword] = useState("")
-  const [userConfirmPassword, setUserConfirmPassword] = useState("")
-  const [userPhoneNumber, setUserPhoneNumber] = useState("")
 
-  const onSignUpClicked = async () =>{
+  const onLoginClicked = async () =>{
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, userName, userPassword)
+      if (auth.currentUser === null) {
+          alert(`Log in failed`)
+      } else {
+          alert(`Welcoime`)
+      }
+  } catch (err) {
+      console.log(err)
+      alert("Wrong Password/Username‼️")
+  }
 
   }
 
   return (
     <View style={styles.container}>
       <View>
-        <TextInput placeholder="Enter First Name" onChangeText={setUserFirstName} value={userFirstName} autoCapitalize="none" style={styles.tb} />
-        <TextInput placeholder="Enter Last Name" onChangeText={setUserLastName} value={userLastName} autoCapitalize="none" style={styles.tb} />
-        <TextInput placeholder="Enter Phone Number" onChangeText={setUserPhoneNumber} value={userPhoneNumber} autoCapitalize="none" style={styles.tb} />
         <TextInput placeholder="Enter Email Here" onChangeText={setUserName} value={userName} autoCapitalize="none" style={styles.tb} />
         <TextInput placeholder="Enter Password Here" onChangeText={setUserPassword} value={userPassword} autoCapitalize="none" style={styles.tb} secureTextEntry />
-        <TextInput placeholder="Confirm Password" onChangeText={setUserConfirmPassword} value={userConfirmPassword} autoCapitalize="none" style={styles.tb} secureTextEntry />
       </View>
-      <Pressable style={styles.btn} onPress={onSignUpClicked}>
-        <Text style={styles.btnLabel}>Sign Up</Text>
+      <Pressable style={styles.btn} onPress={onLoginClicked}>
+        <Text style={styles.btnLabel}>Log In</Text>
       </Pressable>
     </View>
   );
