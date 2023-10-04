@@ -1,40 +1,66 @@
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, StyleSheet, Pressable, TextInput, ImageBackground } from 'react-native';
-import { useState } from "react"
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import { db, auth } from './firebaseConfig';
-
-import { getDoc, doc } from "firebase/firestore";
-
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import signIn from './screens/signIn';
+import signUp from './screens/signUp';
 
 export default function App() {
 
-  const [userFirstName, setUserFirstName] = useState("")
-  const [userLastName, setUserLastName] = useState("")
-  const [userName, setUserName] = useState("")
-  const [userPassword, setUserPassword] = useState("")
-  const [userConfirmPassword, setUserConfirmPassword] = useState("")
-  const [userPhoneNumber, setUserPhoneNumber] = useState("")
-
-  const onSignUpClicked = async () =>{
-
-  }
+  const Stack = createStackNavigator();
 
   return (
-    <View style={styles.container}>
-      <View>
-        <TextInput placeholder="Enter First Name" onChangeText={setUserFirstName} value={userFirstName} autoCapitalize="none" style={styles.tb} />
-        <TextInput placeholder="Enter Last Name" onChangeText={setUserLastName} value={userLastName} autoCapitalize="none" style={styles.tb} />
-        <TextInput placeholder="Enter Phone Number" onChangeText={setUserPhoneNumber} value={userPhoneNumber} autoCapitalize="none" style={styles.tb} />
-        <TextInput placeholder="Enter Email Here" onChangeText={setUserName} value={userName} autoCapitalize="none" style={styles.tb} />
-        <TextInput placeholder="Enter Password Here" onChangeText={setUserPassword} value={userPassword} autoCapitalize="none" style={styles.tb} secureTextEntry />
-        <TextInput placeholder="Confirm Password" onChangeText={setUserConfirmPassword} value={userConfirmPassword} autoCapitalize="none" style={styles.tb} secureTextEntry />
-      </View>
-      <Pressable style={styles.btn} onPress={onSignUpClicked}>
-        <Text style={styles.btnLabel}>Sign Up</Text>
-      </Pressable>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerLeft: false,
+          headerTitleAlign: "center"
+        }}
+   
+        initialRouteName="SignIn">
+        <Stack.Screen component={signIn} name="SignIn"
+           options={{
+            headerStyle: {
+              backgroundColor: '#E69F00',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+          >
+          </Stack.Screen>
+          <Stack.Screen component={signUp} name="SignUp"
+           options={{
+            headerStyle: {
+              backgroundColor: '#E69F00',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+          >
+          </Stack.Screen>
+        {/* <Stack.Screen component={TabScreen} name="TabScreen"
+          options={
+            ({ route }) => (
+              {
+                headerTitle: () => (
+                  <Text style={{ fontSize: 16, fontWeight: "bold" }}>{route.params.params.name}</Text>
+                ),
+                headerLeft: () => (
+                  <Image source={{ uri: route.params.params.picture }} style={{
+                    width: "40%",
+                    height: "100%"
+                  }} />
+                )
+              })}
+              >
+              </Stack.Screen> */}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
