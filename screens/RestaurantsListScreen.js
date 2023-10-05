@@ -175,13 +175,13 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   marker: {
-    backgroundColor: "#624CAB",
-    padding: 8,
-    borderRadius: 8,
+    backgroundColor: "grey",
+    padding: 4,
+    borderRadius: 6,
   },
   markerText: {
     color: "white",
-    fontWeight: "bold",
+    // fontWeight: "bold",
     fontSize : 12
   },
 });
