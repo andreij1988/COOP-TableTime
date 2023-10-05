@@ -1,49 +1,46 @@
-import React, { useState } from "react";
-import { View, Text, FlatList, StyleSheet, Image } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import { db } from '../controller/firebaseConfig.js'
+import { collection, getDocs, onSnapshot, serverTimestamp } from "firebase/firestore";
 
 const MyReservations = () => {
-  // Dummy data for reservations
-  const reservations = [
-    {
-      id: "1",
-      hotelName: "Byblos Downtown",
-      reservationDate: "2023-09-28",
-      reservationTime: "15:00",
-      numberOfGuests: 2,
-      image: require('../assets/hotel1.jpg')
-    },
-    {
-      id: "2",
-      hotelName: "Canoe",
-      reservationDate: "2023-09-30",
-      reservationTime: "18:30",
-      numberOfGuests: 4,
-      image: require('../assets/hotel2.jpg')
-    },
-    // Add more reservation objects here
-  ];
+  const [reservations, setReservations] = useState([]);
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const reservRef = collection(db, "restaurants");
+        const querySnapshot = await getDocs(reservRef);
+        const reservDataArray = querySnapshot.docs.map((doc) => doc.data());
+        setReservations(reservDataArray);
+
+
+      } catch(error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+
+    fetchReservations();
+  }, []);
 
   // Render each reservation item
   const renderItem = ({ item }) => (
     <View style={styles.reservationItem}>
-        <View>
-            <Image source={item.image} style={styles.hotelImage} />
-        </View>
-        <View>
-            <Text style={styles.hotelName}>{item.hotelName}</Text>
-            <Text>Date: {item.reservationDate}</Text>
-            <Text>Time: {item.reservationTime}</Text>
-            <Text>Guests: {item.numberOfGuests}</Text>
-        </View>
+      <View>
+        <Text style={styles.hotelName}>{item.name}</Text>
+        {/* Add other fields here */}
+      </View>
     </View>
   );
+  
 
   return (
     <View style={styles.container}>
+      
       <FlatList
         data={reservations}
-        keyExtractor={(item) => item.id}
         renderItem={renderItem}
+        keyExtractor={(item) => item.id}
       />
     </View>
   );
@@ -54,15 +51,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
-  header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
   reservationItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#F5F5F5",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
     padding: 16,
     marginBottom: 16,
     borderRadius: 8,
@@ -75,7 +67,7 @@ const styles = StyleSheet.create({
   },
   hotelName: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 8,
   },
 });
