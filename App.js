@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import RestaurantsListScreen from './screens/ResturantsListScreen';
+import RestaurantsListScreen from './screens/RestaurantsListScreen';
 
 const Stack = createNativeStackNavigator();
 
