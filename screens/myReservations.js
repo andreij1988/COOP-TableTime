@@ -1,93 +1,69 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+    View,
+    Text,
+    TextInput,
+    StyleSheet,
+    Pressable,
+    FlatList,
+} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../controllers/firebaseConfig";
 
-const myReservations = () => {
-    const [name, setName] = useState("");
-    const [numOfDiners, setNumOfDiners] = useState("");
-    const [selectedOption, setSelectedOption] = useState("option1"); // Default to the first option
-    const [notes, setNotes] = useState("");
+const MyReservations = () => {
+    const [reservationsData, setReservationsData] = useState([]);
 
-    const options = [
-        { label: "7:30 PM", value: "option1" },
-        { label: "8:00 PM", value: "option2" },
-        { label: "8:30 PM", value: "option3" },
-    ];
-
-    const onBookTablePress = () => {
-        // Handle the form submission here
-        console.log("Name:", name);
-        console.log("Number of Diners:", numOfDiners);
-        console.log("Selected Option:", selectedOption);
-        console.log("Notes:", notes);
-
-        // You can perform any necessary actions like sending data to a server or storing it locally.
-    };
+    useEffect(() => {
+        const fetchReservations = async () => {
+            try {
+                const reservationsRef = collection(db, "bookings");
+                const querySnapshot = await getDocs(reservationsRef);
+                const reservationsDataArray = querySnapshot.docs.map((doc) =>
+                    doc.data()
+                );
+                setReservationsData(reservationsDataArray);
+            } catch (error) {
+                console.error("Error fetching favourites:", error);
+            }
+        };
+        fetchReservations();
+    }, []);
 
     return (
         <View style={styles.container}>
-            <Text
-                style={{
-                    fontSize: 28,
-                    paddingBottom: 20
-                }}
-            >
-                Booking Screen
-            </Text>
-            <Text style={styles.label}>What is your name?</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Enter your name"
-                onChangeText={(text) => setName(text)}
+            <Text>My Reservations</Text>
+            <FlatList
+                data={reservationsData}
+                keyExtractor={(item) => item.guestName}
+                renderItem={({ item }) => (
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            padding: 10,
+                        }}
+                    >
+                        <View style={{ padding: 10, marginLeft: 25 }}>
+                            <View>
+                                <Text>Name: {item.guestName}</Text>
+                            </View>
+                            <View>
+                                <Text>Count: {item.guestCount}</Text>
+                            </View>
+                            <View>
+                                <Text>Time: {item.dineTime}</Text>
+                            </View>
+                        </View>
+                    </View>
+                )}
             />
-
-            <Text style={styles.label}>
-                How many people are expected to dine?
-            </Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Enter number of diners"
-                keyboardType="numeric"
-                onChangeText={(text) => setNumOfDiners(text)}
-            />
-
-            <Text style={styles.label}>Select a time slot:</Text>
-            <View style={styles.pickerContainer}>
-                <Picker
-                    selectedValue={selectedOption}
-                    style={styles.picker}
-                    onValueChange={(value) => setSelectedOption(value)}
-                >
-                    {options.map((option) => (
-                        <Picker.Item
-                            label={option.label}
-                            value={option.value}
-                            key={option.value}
-                        />
-                    ))}
-                </Picker>
-            </View>
-
-            <Text style={styles.label}>Any other notes?</Text>
-            <TextInput
-                style={styles.textArea}
-                placeholder="Enter notes"
-                multiline
-                numberOfLines={4}
-                onChangeText={(text) => setNotes(text)}
-            />
-
-            <Pressable style={styles.button} onPress={onBookTablePress}>
-                <Text style={styles.buttonText}>Book Table</Text>
-            </Pressable>
-
-            <StatusBar style="auto" />
         </View>
     );
 };
 
-export default myReservations;
+export default MyReservations;
 
 const styles = StyleSheet.create({
     container: {
