@@ -1,41 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, StyleSheet, Pressable, TextInput, ImageBackground } from 'react-native';
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 import { useState } from "react"
-=======
-=======
->>>>>>> Stashed changes
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import SignIn from './screens/signIn';
 import SignUp from './screens/signUp';
 import TabScreen from './screens/TabScreen';
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
 
 const Stack = createStackNavigator();
->>>>>>> Stashed changes
 
 export default function App() {
 
   return (
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    <View style={styles.container}>
-      <View>
-        <TextInput placeholder="Enter Email Here" onChangeText={setUserName} value={userName} autoCapitalize="none" style={styles.tb} />
-        <TextInput placeholder="Enter Password Here" onChangeText={setUserPassword} value={userPassword} autoCapitalize="none" style={styles.tb} secureTextEntry />
-      </View>
-      <Pressable style={styles.btn} onPress={onLoginClicked}>
-        <Text style={styles.btnLabel}>Log In</Text>
-      </Pressable>
-    </View>
-=======
-=======
->>>>>>> Stashed changes
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
@@ -86,10 +63,6 @@ export default function App() {
               </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
   );
 }
 
