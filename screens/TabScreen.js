@@ -1,6 +1,10 @@
 import { View, Text, Image, Button } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+<<<<<<< Updated upstream
 import { auth } from '../controllers/firebaseConfig'
+=======
+import { auth } from "../controllers/firebaseConfig";
+>>>>>>> Stashed changes
 import { signOut } from 'firebase/auth';
 
 import { Ionicons } from '@expo/vector-icons';

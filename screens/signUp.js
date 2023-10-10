@@ -2,7 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import { View, Text, StyleSheet, Pressable, TextInput, ImageBackground } from 'react-native';
 import { useState } from "react"
 
+<<<<<<< Updated upstream
 import {db, auth } from '../controllers/firebaseConfig'
+=======
+import {db, auth } from "../controllers/firebaseConfig"
+
+>>>>>>> Stashed changes
 import {createUserWithEmailAndPassword} from "firebase/auth"
 
 import { getDoc, doc, setDoc } from "firebase/firestore";
