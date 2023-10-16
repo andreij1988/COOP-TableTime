@@ -49,15 +49,6 @@ export default function App() {
           options={
             ({ route }) => (
               {
-                // headerTitle: () => (
-                //   <Text style={{ fontSize: 16, fontWeight: "bold" }}>{route.params.params.name}</Text>
-                // ),
-                // headerLeft: () => (
-                //   <Image source={{ uri: route.params.params.picture }} style={{
-                //     width: "40%",
-                //     height: "100%"
-                //   }} />
-                // )
                 headerTitle: () => (
                   <Text style={{ fontSize: 20, fontWeight: "bold" }}>{route.params.params.name}</Text>
                 )
