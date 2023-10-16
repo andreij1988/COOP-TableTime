@@ -58,6 +58,9 @@ export default function App() {
                 //     height: "100%"
                 //   }} />
                 // )
+                headerTitle: () => (
+                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>{route.params.params.name}</Text>
+                )
               })}
               >
               </Stack.Screen>

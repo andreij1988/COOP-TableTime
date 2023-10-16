@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { View, Text, StyleSheet, Pressable, TextInput, ImageBackground } from 'react-native';
 import { useState } from "react"
 
-import { auth } from "../controllers/firebaseConfig";
+import { db, auth } from "../controllers/firebaseConfig";
 
 import { getDoc, doc } from "firebase/firestore";
 
@@ -16,8 +16,17 @@ const SignIn = ({ navigation, route }) => {
     const onLoginClicked = async () => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, userName, userPassword)
-            navigation.navigate('TabScreen');
+            if (auth.currentUser === null) {
+                alert(`Log in failed`)
+            } else {
+                const docRef = doc(db, "user", userName)
+                const docSnap = await getDoc(docRef)
+                const userInfo = docSnap.data()
+                console.log(userInfo)
+                const fullName = `${userInfo.lastName}, ${userInfo.firstName}` 
+            navigation.navigate('TabScreen', {screen: "Restuarant Locations", params: {name: fullName}});
             // alert(`Welcoime`)
+            }
         } catch (err) {
             console.log(err)
             alert("Wrong Password/Username‼️")
