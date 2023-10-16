@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, Pressable, TextInput, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Pressable, TextInput, ScrollView} from 'react-native';
 import { useState } from "react"
 
 import {db, auth } from "../controllers/firebaseConfig"
@@ -68,6 +68,7 @@ const SignUp = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <ScrollView indicatorStyle={styles.scrollView}>
       <View>
         <TextInput placeholder="Enter First Name" onChangeText={setUserFirstName} value={userFirstName} autoCapitalize="none" style={styles.tb} />
         <TextInput placeholder="Enter Last Name" onChangeText={setUserLastName} value={userLastName} autoCapitalize="none" style={styles.tb} />
@@ -79,6 +80,7 @@ const SignUp = ({ navigation, route }) => {
       <Pressable style={styles.btn} onPress={onSignUpClicked}>
         <Text style={styles.btnLabel}>Register</Text>
       </Pressable>
+      </ScrollView>
     </View>
   );
 }
@@ -92,6 +94,9 @@ const styles = StyleSheet.create({
      borderRadius:10,
      justifyContent: 'center',
  },
+ scrollView: {
+  marginHorizontal: 20,
+},
   tb: {
     width: "100%",
     borderRadius: 5,
