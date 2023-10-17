@@ -8,6 +8,7 @@ import { db } from "../controllers/firebaseConfig";
 const Booking = ({ route }) => {
   const { item: selectedItem } = route?.params;
   console.log("selectedItem", selectedItem);
+  // add some changes
   const [name, setName] = useState("");
   const [numOfDiners, setNumOfDiners] = useState("");
   const [dineTime, setDineTime] = useState("option1"); // Default to the first option
