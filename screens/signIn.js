@@ -44,10 +44,10 @@ const SignIn = ({ navigation, route }) => {
                 <TextInput placeholder="Enter Password Here" onChangeText={setUserPassword} value={userPassword} autoCapitalize="none" style={styles.tb} secureTextEntry />
             </View>
             <View>
-            <Pressable style={styles.btn} onPress={onLoginClicked}>
+            <Pressable style={styles.btnLI} onPress={onLoginClicked}>
                 <Text style={styles.btnLabel}>Log In</Text>
             </Pressable>
-            <Pressable style={styles.btn} onPress={onSignUpClicked}>
+            <Pressable style={styles.btnSU} onPress={onSignUpClicked}>
                 <Text style={styles.btnLabel}>Sign Up</Text>
             </Pressable>
             </View>
@@ -73,17 +73,24 @@ const styles = StyleSheet.create({
         paddingVertical: 25,
         marginVertical: 10
     },
-    btn: {
+    btnLI: {
         borderRadius: 12,
         paddingVertical: 16,
         paddingHorizontal: 20,
         marginVertical: 20,
-        backgroundColor: "blue",
+        backgroundColor: "green",
+    },
+    btnSU: {
+        borderRadius: 12,
+        paddingVertical: 16,
+        paddingHorizontal: 20,
+        marginVertical: 20,
+        backgroundColor: "gold",
     },
     btnLabel: {
         fontSize: 18,
         textAlign: "center",
-        color: "white",
+        color: "black",
         fontWeight: "bold"
     }
 });

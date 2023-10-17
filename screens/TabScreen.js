@@ -33,8 +33,9 @@ const TabScreen = ({ route, navigation }) => {
             screenOptions={
                 ({ route }) => (
                     {
+                        headerStyle : {backgroundColor : "green"},
                         headerRight: () => (
-                            <Button title='Sign Out' onPress={logOut} />
+                            <Button title='Sign Out' onPress={logOut} color={"red"}/>
                         ),
                         tabBarIcon: ({ focused, color, size }) => {
                             let iconName;
@@ -53,8 +54,8 @@ const TabScreen = ({ route, navigation }) => {
                             // Returning the icon component
                             return <Ionicons name={iconName} size={size} color={color} />;
                         },
-                        tabBarActiveTintColor: "blue",
-                        tabBarInactiveTintColor: "purple",
+                        tabBarActiveTintColor: "green",
+                        tabBarInactiveTintColor: "red",
                     })}>
              <Tab.Screen
                 name="Restuarant Locations"

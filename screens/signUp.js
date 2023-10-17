@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 5,
     backgroundColor: "#efefef",
-    //backgroundColor:'#fff',
     color: "#333",
     fontWeight: "bold",
     paddingHorizontal: 10,
@@ -113,12 +112,12 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 20,
     marginVertical: 20,
-    backgroundColor : "blue",
+    backgroundColor : "green",
 },
 btnLabel: {
     fontSize: 18,
     textAlign: "center",
-    color: "white",
+    color: "black",
     fontWeight:"bold"
 }
 });
