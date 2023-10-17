@@ -3,6 +3,8 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyC3KU1wdietiTgNXXwGzyc554-ligKs9HE",
   authDomain: "coop-tabletime.firebaseapp.com",

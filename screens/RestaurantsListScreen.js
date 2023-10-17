@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from "expo-status-bar";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   StyleSheet,
   SafeAreaView,
   Button,
+  Pressable,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -28,9 +29,7 @@ const RestaurantsListScreen = () => {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      query(
-        collection(db, 'resturants')
-      ),
+      query(collection(db, "resturants")),
       async (snapshot) => {
         try {
           // Extract the data from the documents
@@ -42,8 +41,10 @@ const RestaurantsListScreen = () => {
           // Forward geocode each listing to get latitude and longitude
           const geocodePromises = listingsData.map(async (listing) => {
             try {
-              const geocodedLocation = await Location.geocodeAsync(listing.address);
-              console.log(listing.address)
+              const geocodedLocation = await Location.geocodeAsync(
+                listing.address
+              );
+              console.log(listing.address);
               const result = geocodedLocation[0];
               if (result) {
                 return {
@@ -53,31 +54,33 @@ const RestaurantsListScreen = () => {
                 };
               }
             } catch (error) {
-              console.log('Error in forward geocoding:', error);
+              console.log("Error in forward geocoding:", error);
             }
             return null;
           });
           // Wait for all geocoding promises to resolve
           const geocodedListings = await Promise.all(geocodePromises);
-          console.log("Here " + geocodePromises)
+          console.log("Here " + geocodePromises);
           // Filter out any null results
-          const validListings = geocodedListings.filter((listing) => listing !== null);
+          const validListings = geocodedListings.filter(
+            (listing) => listing !== null
+          );
           setListings(validListings);
           setLoading(false); // Set isLoading to false when data is received
         } catch (error) {
-          console.error('Error fetching Listings:', error);
+          console.error("Error fetching Listings:", error);
           setLoading(false); // Set isLoading to false if there was an error
         }
       },
       (error) => {
-        console.error('Error fetching Listings:', error);
+        console.error("Error fetching Listings:", error);
         setLoading(false); // Set isLoading to false if there was an error
       }
     );
-  
+
     // Clean up the snapshot listener when the component unmounts
     return () => unsubscribe();
-  }, []);  
+  }, []);
 
   // function to get user location i.e. device location
   const getUserLocation = async () => {
@@ -106,8 +109,8 @@ const RestaurantsListScreen = () => {
     }
   };
 
-  const handleMarkerPress = (listing) => {
-    setSelectedListing(listing);
+  const handleMarkerPress = (item) => {
+    setSelectedListing(item);
   };
 
   return (
@@ -140,13 +143,15 @@ const RestaurantsListScreen = () => {
             ))}
           </MapView>
         )}
-        <View style={styles.listingContainer}>
+        {/* <View style={styles.listingContainer}>\
           <FlatList
             data={listings}
             renderItem={({ item }) => <ListingsItem item={item} />}
             keyExtractor={(item) => item.id}
           />
-        </View>
+        </View> */}
+
+        {selectedListing && <ListingsItem item={selectedListing} />}
       </View>
     </SafeAreaView>
   );
@@ -182,7 +187,7 @@ const styles = StyleSheet.create({
   markerText: {
     color: "white",
     // fontWeight: "bold",
-    fontSize : 12
+    fontSize: 12,
   },
 });
 

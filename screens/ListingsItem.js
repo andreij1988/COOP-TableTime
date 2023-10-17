@@ -13,28 +13,24 @@ import { db, auth } from "../controllers/firebaseConfig";
 // import moment from "moment"; // Import moment library
 // importing the firestore functions that you need
 import { collection, addDoc } from "firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
 
 const ListingsItem = ({ item }) => {
-//   const [name, setName] = useState(auth.currentUser.email.split("@")[0]);
-
-
-
+  const navigation = useNavigation();
+  const clickHandler = () => {
+    navigation.navigate("Booking", { item });
+  };
+  //   const [name, setName] = useState(auth.currentUser.email.split("@")[0]);
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.listContainer}>
-        <View style={styles.detailsContainer}>
-        <Text style={styles.details}>{`Name: ${
-                item?.name || "NA"
-              }`}</Text>
-              <Text style={styles.details}>{`Address: ${
-                item?.address || "NA"
-              }`}</Text>
-              
-         
-            </View>
-        </View>
-        
-    </SafeAreaView>
+    <View>
+      <View>
+        <Text>{`Name: ${item?.name || "NA"}`}</Text>
+        <Text>{`Address: ${item?.address || "NA"}`}</Text>
+      </View>
+      <Pressable onPress={clickHandler}>
+        <Text>Click me</Text>
+      </Pressable>
+    </View>
   );
 };
 
@@ -63,7 +59,7 @@ const styles = StyleSheet.create({
   imgDetails: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: 'center',
+    alignItems: "center",
     paddingLeft: 10,
   },
   details: {
@@ -83,12 +79,12 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     justifyContent: "center",
     alignItems: "center",
-    width: '100%',
+    width: "100%",
     backgroundColor: "#624CAB",
   },
   btnLabel: {
     fontSize: 15,
-    fontWeight: '700',
+    fontWeight: "700",
     color: "#ffffff",
     textAlign: "center",
   },
