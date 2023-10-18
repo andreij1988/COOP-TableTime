@@ -160,27 +160,24 @@ const RestaurantsListScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FAF4F1",
+    backgroundColor: "white",
     paddingTop: Platform.OS == "android" ? StatusBar.currentHeight : 0,
     justifyContent: "center",
   },
   mapContainer: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "space-around",
+    // justifyContent: "space-around",
   },
-  listingContainer: {
-    flex: 1,
-    flexDirection: "row",
-  },
+
   map: {
     width: "100%",
-    height: 350,
+    height: 400,
     borderRadius: 8,
     overflow: "hidden",
   },
   marker: {
-    backgroundColor: "grey",
+    backgroundColor: "#1344f2",
     padding: 4,
     borderRadius: 6,
   },
