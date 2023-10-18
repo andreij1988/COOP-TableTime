@@ -4,7 +4,6 @@ import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
 import { doc, addDoc, collection } from "firebase/firestore";
 import { db } from "../controllers/firebaseConfig";
-
 const Booking = ({ route }) => {
   const { item: selectedItem } = route?.params;
   console.log("selectedItem", selectedItem);
@@ -13,20 +12,17 @@ const Booking = ({ route }) => {
   const [numOfDiners, setNumOfDiners] = useState("");
   const [dineTime, setDineTime] = useState("option1"); // Default to the first option
   const [notes, setNotes] = useState("");
-
   const options = [
     { label: "7:30 PM", value: "7:30 PM" },
     { label: "8:00 PM", value: "8:00 PM" },
     { label: "8:30 PM", value: "8:30 PM" },
   ];
-
   const onBookTablePress = async () => {
     // Handle the form submission here
     console.log("Name:", name);
     console.log("Number of Diners:", numOfDiners);
     console.log("Selected Option:", dineTime);
     console.log("Notes:", notes);
-
     try {
       const bookingData = {
         guestName: name,
@@ -34,16 +30,13 @@ const Booking = ({ route }) => {
         dineTime: dineTime,
         addnlNotes: notes,
       };
-
       const docRef = await addDoc(collection(db, "bookings"), bookingData);
       console.log("Booking confirmed with document ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding booking to db: ", e);
     }
-
     // You can perform any necessary actions like sending data to a server or storing it locally.
   };
-
   return (
     <View style={styles.container}>
       <Text
@@ -60,7 +53,6 @@ const Booking = ({ route }) => {
         placeholder="Enter your name"
         onChangeText={(text) => setName(text)}
       />
-
       <Text style={styles.label}>How many people are expected to dine?</Text>
       <TextInput
         style={styles.input}
@@ -68,7 +60,6 @@ const Booking = ({ route }) => {
         keyboardType="numeric"
         onChangeText={(text) => setNumOfDiners(text)}
       />
-
       <Text style={styles.label}>Select a time slot:</Text>
       <View style={styles.pickerContainer}>
         <Picker
@@ -85,7 +76,6 @@ const Booking = ({ route }) => {
           ))}
         </Picker>
       </View>
-
       <Text style={styles.label}>Any other notes?</Text>
       <TextInput
         style={styles.textArea}
@@ -94,18 +84,14 @@ const Booking = ({ route }) => {
         numberOfLines={4}
         onChangeText={(text) => setNotes(text)}
       />
-
       <Pressable style={styles.button} onPress={onBookTablePress}>
         <Text style={styles.buttonText}>Book Table</Text>
       </Pressable>
-
       <StatusBar style="auto" />
     </View>
   );
 };
-
 export default Booking;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
