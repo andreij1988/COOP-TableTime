@@ -21,7 +21,6 @@ const TabScreen = ({ route, navigation }) => {
     } catch (err) {
       console.log(err);
     }
-<<<<<<< HEAD
   };
   return (
     <Tab.Navigator
@@ -54,52 +53,3 @@ const TabScreen = ({ route, navigation }) => {
   );
 };
 export default TabScreen;
-=======
-
-    return (
-        <Tab.Navigator
-            screenOptions={
-                ({ route }) => (
-                    {
-                        headerStyle : {backgroundColor : "green"},
-                        headerRight: () => (
-                            <Button title='Sign Out' onPress={logOut} color={"red"}/>
-                        ),
-                        tabBarIcon: ({ focused, color, size }) => {
-                            let iconName;
-
-                            // Define the icon based on the route name
-                            if (route.name === 'Booking') {
-                                iconName = focused ? 'add-circle' : 'add-circle-outline';
-                            }
-                            else if (route.name === 'My Reservations') {
-                                iconName = focused ? 'list-sharp' : 'list-outline';
-                            }
-                            else if (route.name === 'Restuarant Locations') {
-                                iconName = focused ? 'map' : 'map-outline';
-                            }
-
-                            // Returning the icon component
-                            return <Ionicons name={iconName} size={size} color={color} />;
-                        },
-                        tabBarActiveTintColor: "green",
-                        tabBarInactiveTintColor: "red",
-                    })}>
-             <Tab.Screen
-                name="Restuarant Locations"
-                component={RestaurantsListScreen}
-            />
-            <Tab.Screen
-                name="Booking"
-                component={Booking}
-            />
-            <Tab.Screen
-                name="My Reservations"
-                component={MyReservations}
-            />
-        </Tab.Navigator>
-    )
-}
-
-export default TabScreen;
->>>>>>> 65d001e05cbc5ea084b47d27d4273aa6f38a861d

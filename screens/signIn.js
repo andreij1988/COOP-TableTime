@@ -39,7 +39,6 @@ const SignIn = ({ navigation, route }) => {
       console.log(err);
       alert("Wrong Password/Username‼️");
     }
-<<<<<<< HEAD
   };
   const onSignUpClicked = () => {
     navigation.navigate("SignUp");
@@ -104,68 +103,5 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
-=======
-
-    const onSignUpClicked = () => {
-        navigation.navigate('SignUp');
-    }
-
-    return (
-        <View style={styles.container}>
-            <View>
-                <TextInput placeholder="Enter Email Here" onChangeText={setUserName} value={userName} autoCapitalize="none" style={styles.tb} />
-                <TextInput placeholder="Enter Password Here" onChangeText={setUserPassword} value={userPassword} autoCapitalize="none" style={styles.tb} secureTextEntry />
-            </View>
-            <View>
-            <Pressable style={styles.btnLI} onPress={onLoginClicked}>
-                <Text style={styles.btnLabel}>Log In</Text>
-            </Pressable>
-            <Pressable style={styles.btnSU} onPress={onSignUpClicked}>
-                <Text style={styles.btnLabel}>Sign Up</Text>
-            </Pressable>
-            </View>
-        </View>
-    );
-}
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        borderRadius: 10,
-        justifyContent: 'center',
-    },
-    tb: {
-        width: "100%",
-        borderRadius: 5,
-        backgroundColor: "#efefef",
-        color: "#333",
-        fontWeight: "bold",
-        paddingHorizontal: 10,
-        paddingVertical: 25,
-        marginVertical: 10
-    },
-    btnLI: {
-        borderRadius: 12,
-        paddingVertical: 16,
-        paddingHorizontal: 20,
-        marginVertical: 20,
-        backgroundColor: "green",
-    },
-    btnSU: {
-        borderRadius: 12,
-        paddingVertical: 16,
-        paddingHorizontal: 20,
-        marginVertical: 20,
-        backgroundColor: "gold",
-    },
-    btnLabel: {
-        fontSize: 18,
-        textAlign: "center",
-        color: "black",
-        fontWeight: "bold"
-    }
->>>>>>> 65d001e05cbc5ea084b47d27d4273aa6f38a861d
 });
 export default SignIn;
