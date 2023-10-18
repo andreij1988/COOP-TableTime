@@ -26,7 +26,7 @@ export default function App() {
             headerStyle: {
               backgroundColor: '#E69F00',
             },
-            headerTintColor: '#fff',
+            headerTintColor: 'black',
             headerTitleStyle: {
               fontWeight: 'bold',
             },
@@ -38,7 +38,7 @@ export default function App() {
             headerStyle: {
               backgroundColor: '#E69F00',
             },
-            headerTintColor: '#fff',
+            headerTintColor: 'black',
             headerTitleStyle: {
               fontWeight: 'bold',
             },
@@ -49,9 +49,10 @@ export default function App() {
           options={
             ({ route }) => (
               {
+                headerStyle : {backgroundColor : "#E69F00"},
                 headerTitle: () => (
                   <Text style={{ fontSize: 20, fontWeight: "bold" }}>{route.params.params.name}</Text>
-                )
+                ),
               })}
               >
               </Stack.Screen>
@@ -71,7 +72,6 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 5,
     backgroundColor: "#efefef",
-    //backgroundColor:'#fff',
     color: "#333",
     fontWeight: "bold",
     paddingHorizontal: 10,

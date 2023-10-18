@@ -21,35 +21,49 @@ const TabScreen = ({ route, navigation }) => {
     } catch (err) {
       console.log(err);
     }
-  };
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerRight: () => <Button title="Sign Out" onPress={logOut} />,
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-          // Define the icon based on the route name
-          if (route.name === "Booking") {
-            iconName = focused ? "add-circle" : "add-circle-outline";
-          } else if (route.name === "My Reservations") {
-            iconName = focused ? "list-sharp" : "list-outline";
-          } else if (route.name === "Restuarant Locations") {
-            iconName = focused ? "map" : "map-outline";
-          }
-          // Returning the icon component
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: "#f26716",
-        tabBarInactiveTintColor: "#1344f2",
-      })}
-    >
-      <Tab.Screen
-        name="Restuarant Locations"
-        component={RestaurantsListScreen}
-      />
-      <Tab.Screen name="Booking" component={Booking} />
-      <Tab.Screen name="My Reservations" component={MyReservations} />
-    </Tab.Navigator>
-  );
-};
+
+    return (
+        <Tab.Navigator
+            screenOptions={
+                ({ route }) => (
+                    {
+                        headerRight: () => (
+                            <Button title='Sign Out' onPress={logOut} />
+                        ),
+                        tabBarIcon: ({ focused, color, size }) => {
+                            let iconName;
+
+                            // Define the icon based on the route name
+                            if (route.name === 'Booking') {
+                                iconName = focused ? 'add-circle' : 'add-circle-outline';
+                            }
+                            else if (route.name === 'My Reservations') {
+                                iconName = focused ? 'list-sharp' : 'list-outline';
+                            }
+                            else if (route.name === 'Restuarant Locations') {
+                                iconName = focused ? 'map' : 'map-outline';
+                            }
+
+                            // Returning the icon component
+                            return <Ionicons name={iconName} size={size} color={color} />;
+                        },
+                        tabBarActiveTintColor: "blue",
+                        tabBarInactiveTintColor: "purple",
+                    })}>
+             <Tab.Screen
+                name="Restuarant Locations"
+                component={RestaurantsListScreen}
+            />
+            <Tab.Screen
+                name="Booking"
+                component={Booking}
+            />
+            <Tab.Screen
+                name="My Reservations"
+                component={MyReservations}
+            />
+        </Tab.Navigator>
+    )
+}
+
 export default TabScreen;
