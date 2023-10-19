@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
+import { View, Text, TextInput, StyleSheet, Pressable, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
 import { doc, addDoc, collection } from "firebase/firestore";
@@ -38,57 +38,59 @@ const Booking = ({ route }) => {
     // You can perform any necessary actions like sending data to a server or storing it locally.
   };
   return (
-    <View style={styles.container}>
-      <Text
-        style={{
-          fontSize: 28,
-          paddingBottom: 20,
-        }}
-      >
-        Booking Screen
-      </Text>
-      <Text style={styles.label}>What is your name?</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your name"
-        onChangeText={(text) => setName(text)}
-      />
-      <Text style={styles.label}>How many people are expected to dine?</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter number of diners"
-        keyboardType="numeric"
-        onChangeText={(text) => setNumOfDiners(text)}
-      />
-      <Text style={styles.label}>Select a time slot:</Text>
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={dineTime}
-          style={styles.picker}
-          onValueChange={(value) => setDineTime(value)}
+    <ScrollView>
+      <View style={styles.container}>
+        <Text
+          style={{
+            fontSize: 28,
+            paddingBottom: 20,
+          }}
         >
-          {options.map((option) => (
-            <Picker.Item
-              label={option.label}
-              value={option.value}
-              key={option.value}
-            />
-          ))}
-        </Picker>
+          Booking Screen
+        </Text>
+        <Text style={styles.label}>What is your name?</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your name"
+          onChangeText={(text) => setName(text)}
+        />
+        <Text style={styles.label}>How many people are expected to dine?</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter number of diners"
+          keyboardType="numeric"
+          onChangeText={(text) => setNumOfDiners(text)}
+        />
+        <Text style={styles.label}>Select a time slot:</Text>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={dineTime}
+            style={styles.picker}
+            onValueChange={(value) => setDineTime(value)}
+          >
+            {options.map((option) => (
+              <Picker.Item
+                label={option.label}
+                value={option.value}
+                key={option.value}
+              />
+            ))}
+          </Picker>
+        </View>
+        <Text style={styles.label}>Any other notes?</Text>
+        <TextInput
+          style={styles.textArea}
+          placeholder="Enter notes"
+          multiline
+          numberOfLines={4}
+          onChangeText={(text) => setNotes(text)}
+        />
+        <Pressable style={styles.button} onPress={onBookTablePress}>
+          <Text style={styles.buttonText}>Book Table</Text>
+        </Pressable>
+        <StatusBar style="auto" />
       </View>
-      <Text style={styles.label}>Any other notes?</Text>
-      <TextInput
-        style={styles.textArea}
-        placeholder="Enter notes"
-        multiline
-        numberOfLines={4}
-        onChangeText={(text) => setNotes(text)}
-      />
-      <Pressable style={styles.button} onPress={onBookTablePress}>
-        <Text style={styles.buttonText}>Book Table</Text>
-      </Pressable>
-      <StatusBar style="auto" />
-    </View>
+    </ScrollView>
   );
 };
 export default Booking;
