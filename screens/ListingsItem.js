@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 const ListingsItem = ({ item }) => {
   const navigation = useNavigation();
   const clickHandler = () => {
-    navigation.navigate("Booking", { item });
+    navigation.navigate("Booking", { restaurantData: item });
   };
   return (
     <View style={styles.container}>

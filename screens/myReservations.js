@@ -33,7 +33,6 @@ const MyReservations = () => {
 
     return (
         <View style={styles.container}>
-            <Text>My Reservations</Text>
             <FlatList
                 data={reservationsData}
                 keyExtractor={(item) => item.guestName}
@@ -45,7 +44,7 @@ const MyReservations = () => {
                             padding: 10,
                         }}
                     >
-                        <View style={{ padding: 10, marginLeft: 25 }}>
+                        <View style={{ padding: 10, width:"100%", borderColor: "blue", borderBottomWidth: 1 }}>
                             <View>
                                 <Text>Name: {item.guestName}</Text>
                             </View>
