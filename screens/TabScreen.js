@@ -41,10 +41,7 @@ const TabScreen = ({ route, navigation }) => {
                             let iconName;
 
                             // Define the icon based on the route name
-                            if (route.name === 'Booking') {
-                                iconName = focused ? 'add-circle' : 'add-circle-outline';
-                            }
-                            else if (route.name === 'My Reservations') {
+                            if (route.name === 'My Reservations') {
                                 iconName = focused ? 'list-sharp' : 'list-outline';
                             }
                             else if (route.name === 'Restuarant Locations') {
@@ -60,10 +57,6 @@ const TabScreen = ({ route, navigation }) => {
              <Tab.Screen
                 name="Restuarant Locations"
                 component={RestaurantsListScreen}
-            />
-            <Tab.Screen
-                name="Booking"
-                component={Booking}
             />
             <Tab.Screen
                 name="My Reservations"
