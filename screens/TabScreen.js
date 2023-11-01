@@ -4,7 +4,7 @@ import { auth } from "../controllers/firebaseConfig";
 import { signOut } from 'firebase/auth';
 
 import { Ionicons } from '@expo/vector-icons';
-import Booking from "./booking";
+import Profile from "./Profile";
 import MyReservations from "./myReservations";
 import RestaurantsListScreen from "./RestaurantsListScreen";
 
@@ -47,6 +47,9 @@ const TabScreen = ({ route, navigation }) => {
                             else if (route.name === 'Restuarant Locations') {
                                 iconName = focused ? 'map' : 'map-outline';
                             }
+                            else if (route.name === 'My Profile') {
+                                iconName = focused ? 'person-circle' : 'person-circle-outline';
+                            }
 
                             // Returning the icon component
                             return <Ionicons name={iconName} size={size} color={color} />;
@@ -61,6 +64,10 @@ const TabScreen = ({ route, navigation }) => {
             <Tab.Screen
                 name="My Reservations"
                 component={MyReservations}
+            />
+                                     <Tab.Screen
+                name="My Profile"
+                component={Profile}
             />
         </Tab.Navigator>
     )
