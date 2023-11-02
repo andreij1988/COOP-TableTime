@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignIn from './screens/signIn';
 import SignUp from './screens/signUp';
 import TabScreen from './screens/TabScreen';
+import booking from './screens/booking'
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,18 @@ export default function App() {
               })}
               >
               </Stack.Screen>
+        <Stack.Screen component={booking} name="Booking"
+           options={{
+            headerStyle: {
+              backgroundColor: '#E69F00',
+            },
+            headerTintColor: 'black',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+          >
+          </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

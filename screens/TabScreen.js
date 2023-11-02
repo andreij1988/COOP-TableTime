@@ -65,7 +65,7 @@ const TabScreen = ({ route, navigation }) => {
                 name="My Reservations"
                 component={MyReservations}
             />
-                                     <Tab.Screen
+                                <Tab.Screen
                 name="My Profile"
                 component={Profile}
             />

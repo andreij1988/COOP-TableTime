@@ -4,7 +4,7 @@ import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
 import { doc, addDoc, collection } from "firebase/firestore";
 import { db } from "../controllers/firebaseConfig";
-const Booking = ({ route }) => {
+const Booking = ({ navigation, route }) => {
   const { item: selectedItem } = route?.params;
   console.log("selectedItem", selectedItem);
   // add some changes
@@ -32,6 +32,7 @@ const Booking = ({ route }) => {
       };
       const docRef = await addDoc(collection(db, "bookings"), bookingData);
       console.log("Booking confirmed with document ID: ", docRef.id);
+      navigation.goBack()
     } catch (e) {
       console.error("Error adding booking to db: ", e);
     }
