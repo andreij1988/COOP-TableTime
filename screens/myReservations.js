@@ -2,38 +2,49 @@ import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
-    TextInput,
     StyleSheet,
-    Pressable,
     FlatList,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import { StatusBar } from "expo-status-bar";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../controllers/firebaseConfig";
 
 const MyReservations = () => {
     const [reservationsData, setReservationsData] = useState([]);
 
     useEffect(() => {
-        const fetchReservations = async () => {
-            try {
-                const reservationsRef = collection(db, "bookings");
-                const querySnapshot = await getDocs(reservationsRef);
-                const reservationsDataArray = querySnapshot.docs.map((doc) =>
-                    doc.data()
-                );
-                setReservationsData(reservationsDataArray);
-            } catch (error) {
-                console.error("Error fetching favourites:", error);
-            }
+        // const fetchReservations = async () => {
+        //     try {
+        //         const reservationsRef = collection(db, "bookings");
+        //         const querySnapshot = await getDocs(reservationsRef);
+        //         const reservationsDataArray = querySnapshot.docs.map((doc) =>
+        //             doc.data()
+        //         );
+        //         setReservationsData(reservationsDataArray);
+        //     } catch (error) {
+        //         console.error("Error fetching favourites:", error);
+        //     }
+        // };
+        // fetchReservations();
+        const reservationsRef = collection(db, "bookings");
+        const unsubscribe = onSnapshot(reservationsRef, (snapshot) => {
+            const reservationsDataArray = [];
+            snapshot.forEach((doc) => {
+                reservationsDataArray.push({
+                    id: doc.id,
+                    ...doc.data(),
+                });
+            });
+            setReservationsData(reservationsDataArray);
+        });
+
+        return () => {
+            unsubscribe();
         };
-        fetchReservations();
     }, []);
 
     return (
         <View style={styles.container}>
-            <Text>My Reservations</Text>
+            {/* <Text>My Reservations</Text> */}
             <FlatList
                 data={reservationsData}
                 keyExtractor={(item) => item.guestName}
@@ -45,15 +56,22 @@ const MyReservations = () => {
                             padding: 10,
                         }}
                     >
-                        <View style={{ padding: 10, marginLeft: 25 }}>
-                            <View>
-                                <Text>Name: {item.guestName}</Text>
+                        <View style={{ padding: 10, width:"100%", borderColor: "blue", borderBottomWidth: 1 }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Restaurant: </Text>
+                                <Text style={{ fontSize: 16 }}>{item.restaurantName}</Text>
                             </View>
-                            <View>
-                                <Text>Count: {item.guestCount}</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Name: </Text>
+                                <Text style={{ fontSize: 16 }}>{item.guestName}</Text>
                             </View>
-                            <View>
-                                <Text>Time: {item.dineTime}</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Count: </Text>
+                                <Text style={{ fontSize: 16 }}>{item.guestCount}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Time: </Text>
+                                <Text style={{ fontSize: 16 }}>{item.dineTime}</Text>
                             </View>
                         </View>
                     </View>
