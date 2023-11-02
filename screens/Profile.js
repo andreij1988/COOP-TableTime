@@ -30,7 +30,6 @@ const Profile = ({ navigation, route }) => {
             const docRef = doc(db, "user", auth.currentUser.email)
             const docSnap = await getDoc(docRef)
             const userInfo = docSnap.data()
-            console.log(userInfo)
             setUserFirstName(userInfo.firstName)
             setUserLastName(userInfo.lastName)
             setUserPhoneNumber(userInfo.phone)
