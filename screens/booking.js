@@ -5,8 +5,8 @@ import { StatusBar } from "expo-status-bar";
 import { doc, addDoc, collection } from "firebase/firestore";
 import { db } from "../controllers/firebaseConfig";
 const Booking = ({ navigation, route }) => {
-  const { item: selectedItem } = route?.params;
-  console.log("selectedItem", selectedItem);
+  const { restaurantData  } = route.params;
+  console.log("selectedItem", restaurantData);
   // add some changes
   const [name, setName] = useState("");
   const [numOfDiners, setNumOfDiners] = useState("");
@@ -29,6 +29,7 @@ const Booking = ({ navigation, route }) => {
         guestCount: numOfDiners,
         dineTime: dineTime,
         addnlNotes: notes,
+        restaurantName: restaurantData.name
       };
       const docRef = await addDoc(collection(db, "bookings"), bookingData);
       console.log("Booking confirmed with document ID: ", docRef.id);
@@ -47,7 +48,7 @@ const Booking = ({ navigation, route }) => {
             paddingBottom: 20,
           }}
         >
-          Booking Screen
+          Booking for '{restaurantData.name}' restaurant
         </Text>
         <Text style={styles.label}>What is your name?</Text>
         <TextInput
