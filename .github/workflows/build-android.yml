@@ -1,4 +1,4 @@
-name: Android Build ## name of the workflow
+name: "Build Android app"
 
 on:
   workflow_dispatch:
@@ -6,71 +6,39 @@ on:
     # can add push and pull_request here 
 
 jobs:
-  android-build:
-    name: Android Build
-    runs-on: ubuntu-latest # using ubuntu latest version / or you can use a specific version
-
+  build:
+    runs-on: ubuntu-latest
     steps:
-      - name: Check out Git repository # clone the repo to local ci workspace
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up our JDK environment # setup JDK environment: mandatory as we need to build  android project
-        uses: actions/setup-java@v1.4.3
+      - name: Install Java
+        uses: actions/setup-java@v2
         with:
-          java-version: 1.8
+          java-version: "11"
+          distribution: "adopt"
+          cache: "gradle"
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: Restore node_modules from cache
-        uses: actions/cache@v2
-        id: yarn-cache
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Setup Node  
+        uses: actions/setup-node@v3
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version: '16'
 
-      - name: Install dependencies # install project deps with --frozen-lockfile to make sure we will have the same packages version ( very recommended  on running yarn install on ci)
-        run: yarn install --frozen-lockfile
-
-      ## configure cash for gradle : will help to reduce build time
-      - name: Cache Gradle Wrapper
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-
-      - name: Cache Gradle Dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-caches-
-      - name: Make Gradlew Executable
-        run: cd android && chmod +x ./gradlew
-
-      - name: Generate App APK
+      - name: Run Yarn Install
         run: |
-          cd android && ./gradlew assembleRelease --no-daemon
-
-      ## sign generated apk
-      - name: Sign APK
-        id: sign_app
-        uses: r0adkll/sign-android-release@v1
+             cd ./packages/app-mobile/
+             npm i -g corepack
+             yarn install             
+      - name: Build application
+        run: |
+             cd ./packages/app-mobile/android
+             ./gradlew assembleDebug             
+      - name: Upload application
+        uses: actions/upload-artifact@v2
         with:
-          releaseDirectory: android/app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
-          alias: ${{ secrets.ANDROID_ALIAS }}
-          keyStorePassword: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
-
-      ## Distribute app to Firebase App Distribution for testing / use google play internal track if you have a google play account
-      - name: upload artifact to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{secrets.ANDROID_FIREBASE_APP_ID}}
-          token: ${{secrets.ANDROID_FIREBASE_TOKEN}}
-          groups: testers
-          file: ${{steps.sign_app.outputs.signedReleaseFile}}
+          name: app
+          path: ./packages/app-mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 3
