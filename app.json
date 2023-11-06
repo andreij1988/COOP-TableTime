@@ -27,7 +27,17 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-build-properties"
+      "expo-build-properties",
+      {
+        "android": {
+          "compileSdkVersion": 26,
+          "targetSdkVersion": 26,
+          "buildToolsVersion": "26.0.0"
+        },
+        "ios": {
+          "deploymentTarget": "13.0"
+        }
+      }
     ]
   }
 }
