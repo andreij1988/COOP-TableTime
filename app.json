@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "TableTime",
+    "displayName": "TableTime",
     "slug": "TableTime",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,13 +22,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.andreij1988.TableTime"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-build-properties"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "6016fbe5-b1e3-42fd-a5a2-ad0b7e754c90"
+      }
+    }
   }
 }
