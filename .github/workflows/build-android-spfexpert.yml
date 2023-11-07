@@ -51,6 +51,7 @@ jobs:
         with:
           appName: ${{ env.APP_NAME }}
           token: ${{ env.APP_CENTER_TOKEN }}
+          group: Developer
           file: ${{ env.UPLOAD_FILE }}
           notifyTesters: true
           debug: true
