@@ -8,6 +8,7 @@ on:
 env:
   APP_CENTER_TOKEN: ${{ secrets.APP_CENTER_TOKEN_MYAPP_ANDROID_TEST  }}  
   APP_NAME: ${{ 'G1-TableTime/TableTime'  }}  
+  TESTING_GROUP: ${{  'Developer'  }} 
   UPLOAD_FILE: ${{ './android/app/build/outputs/apk/debug/app-debug.apk'  }}  
 
 jobs:
@@ -51,6 +52,7 @@ jobs:
         with:
           appName: ${{ env.APP_NAME }}
           token: ${{ env.APP_CENTER_TOKEN }}
+          group: ${{ env.TESTING_GROUP }}
           file: ${{ env.UPLOAD_FILE }}
           notifyTesters: true
           debug: true
