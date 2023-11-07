@@ -31,7 +31,8 @@ jobs:
              yarn install             
       - name: Build application
         run: |
-             cd ./packages/app-mobile/android
+             cd ./android
+             chmod +x gradlew
              ./gradlew assembleDebug             
       - name: Upload application
         uses: actions/upload-artifact@v2
