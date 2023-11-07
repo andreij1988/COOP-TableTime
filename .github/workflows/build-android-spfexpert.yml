@@ -4,6 +4,12 @@ on:
   workflow_dispatch:
     branches: [dev]
     # can add push and pull_request here 
+    
+env:
+  APP_CENTER_TOKEN: ${{ secrets.APP_CENTER_TOKEN_MYAPP_ANDROID_TEST  }}  
+  APP_NAME: ${{ 'G1-TableTime/TableTime'  }}  
+  TESTING_GROUP: ${{  'GBC'  }} 
+  UPLOAD_FILE: ${{ 'android/app/build/outputs/apk/app-debug.apk'  }}  
 
 jobs:
   build:
@@ -40,3 +46,13 @@ jobs:
           name: app
           path: ./android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 3
+
+      - name: Upload to App Center
+        uses: wzieba/AppCenter-Github-Action@v1
+        with:
+          appName: ${{ env.APP_NAME }}
+          token: ${{ env.APP_CENTER_TOKEN }}
+          group: ${{ env.TESTING_GROUP }}
+          file: ${{ env.UPLOAD_FILE }}
+          notifyTesters: true
+          debug: true
