@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  SafeAreaView,
-  Button,
-  Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import { collection, query, where, onSnapshot, getDocs } from "firebase/firestore";
-import { db, auth } from "../controllers/firebaseConfig";
+import { collection, query, getDocs } from "firebase/firestore";
+import { db } from "../controllers/firebaseConfig";
 import ListingsItem from "./ListingsItem";
 const RestaurantsListScreen = () => {
   const [userLocation, setUserLocation] = useState(null);
@@ -23,57 +15,6 @@ const RestaurantsListScreen = () => {
     getUserLocation();
     getRestuarantLocation();
   }, []);
-  // useEffect(() => {
-  //   const unsubscribe = onSnapshot(
-  //     query(collection(db, "resturants")),
-  //     async (snapshot) => {
-  //       try {
-  //         // Extract the data from the documents
-  //         const listingsData = snapshot.docs.map((doc) => ({
-  //           id: doc.id,
-  //           ...doc.data(),
-  //         }));
-  //         // Forward geocode each listing to get latitude and longitude
-  //         const geocodePromises = listingsData.map(async (listing) => {
-  //           try {
-  //             const geocodedLocation = await Location.geocodeAsync(
-  //               listing.address
-  //             );
-  //             const result = geocodedLocation[0];
-  //             if (result) {
-  //               return {
-  //                 ...listing,
-  //                 latitude: result.latitude,
-  //                 longitude: result.longitude,
-  //               };
-  //             }
-  //             console.log(result)
-  //           } catch (error) {
-  //             console.log("Error in forward geocoding:", error);
-  //           }
-  //           return null;
-  //         });
-  //         // Wait for all geocoding promises to resolve
-  //         const geocodedListings = await Promise.all(geocodePromises);
-  //         // Filter out any null results
-  //         const validListings = geocodedListings.filter(
-  //           (listing) => listing !== null
-  //         );
-  //         setListings(validListings);
-  //         setLoading(false); // Set isLoading to false when data is received
-  //       } catch (error) {
-  //         console.error("Error fetching Listings:", error);
-  //         setLoading(false); // Set isLoading to false if there was an error
-  //       }
-  //     },
-  //     (error) => {
-  //       console.error("Error fetching Listings:", error);
-  //       setLoading(false); // Set isLoading to false if there was an error
-  //     }
-  //   );
-  //   // Clean up the snapshot listener when the component unmounts
-  //   return () => unsubscribe();
-  // }, []);
 
   const getRestuarantLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -81,39 +22,38 @@ const RestaurantsListScreen = () => {
       alert(`Permission to access location was denied`);
       return;
     } else {
-      console.log("Granted")
+      console.log("Granted");
     }
-    const restList = query(collection(db, "resturants"))
+    const restList = query(collection(db, "resturants"));
     try {
-      let tempLD = []
-      const querySnapshot = await getDocs(restList)
+      let tempLD = [];
+      const querySnapshot = await getDocs(restList);
       querySnapshot.forEach((doc) => {
         tempLD.push({
           id: doc.id,
-          ...doc.data()
-        })
+          ...doc.data(),
+        });
       });
-      let listingData = []
+      let listingData = [];
       for (let i = 0; i < tempLD.length; i++) {
         const geocodedLocation = await Location.geocodeAsync(tempLD[i].address);
         const result = geocodedLocation[0];
         if (result === undefined) {
-          console.log(`${tempLD[i].address} is undefined`)
-        }
-        else {
+          console.log(`${tempLD[i].address} is undefined`);
+        } else {
           listingData.push({
             ...tempLD[i],
             latitude: result.latitude,
             longitude: result.longitude,
-          })
+          });
         }
       }
-    setListings(listingData);
-    setLoading(false); // Set isLoading to false when data is received
+      setListings(listingData);
+      setLoading(false); // Set isLoading to false when data is received
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   // function to get user location i.e. device location
   const getUserLocation = async () => {
     try {
@@ -197,7 +137,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: "100%",
-    height: 400,
+    height: 330,
     borderRadius: 8,
     overflow: "hidden",
   },
