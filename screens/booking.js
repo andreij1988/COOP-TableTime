@@ -11,6 +11,8 @@ import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
 import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../controllers/firebaseConfig";
+
+
 const Booking = ({ navigation, route }) => {
   const { restaurantData } = route.params;
   console.log("selectedItem", restaurantData);
@@ -75,11 +77,12 @@ const Booking = ({ navigation, route }) => {
         >
           Booking for '{restaurantData.name}' restaurant
         </Text>
-        <Text style={styles.label}>What is your name?</Text>
+        <Text style={styles.label}>Booking under the name:</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter your name"
-          onChangeText={(text) => setName(text)}
+          onChangeText={(text) => setUserName(text)}
+          value={userName}
         />
         <Text style={styles.label}>How many people are expected to dine?</Text>
         <TextInput
