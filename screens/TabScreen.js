@@ -33,9 +33,9 @@ const TabScreen = ({ route, navigation }) => {
             screenOptions={
                 ({ route }) => (
                     {
-                        headerStyle : {backgroundColor : "green"},
+                        headerStyle: { backgroundColor: "green" },
                         headerRight: () => (
-                            <Button title='Sign Out' onPress={logOut} color={"red"}/>
+                            <Button title='Sign Out' onPress={logOut} color={"red"} />
                         ),
                         tabBarIcon: ({ focused, color, size }) => {
                             let iconName;
@@ -57,7 +57,7 @@ const TabScreen = ({ route, navigation }) => {
                         tabBarActiveTintColor: "green",
                         tabBarInactiveTintColor: "red",
                     })}>
-             <Tab.Screen
+            <Tab.Screen
                 name="Restuarant Locations"
                 component={RestaurantsListScreen}
             />
@@ -65,7 +65,7 @@ const TabScreen = ({ route, navigation }) => {
                 name="My Reservations"
                 component={MyReservations}
             />
-                                <Tab.Screen
+            <Tab.Screen
                 name="My Profile"
                 component={Profile}
             />

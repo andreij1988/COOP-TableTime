@@ -21,10 +21,10 @@ const Profile = ({ navigation, route }) => {
     const [dataLoaded, setDataLoaded] = useState(false);
 
     const [check, setCheck] = useState(true)
-    const changeProfile = () =>{
+    const changeProfile = () => {
     }
 
-    const retrieveFromDb =  async () => {
+    const retrieveFromDb = async () => {
         console.log(auth.currentUser.email)
         try {
             const docRef = doc(db, "user", auth.currentUser.email)
@@ -38,21 +38,27 @@ const Profile = ({ navigation, route }) => {
             console.log(err)
         }
     }
+    const updateProfileClicked = () => {
+        navigation.navigate("Update Profile");
+    }
 
     return (
         <View style={styles.container}>
-                        {!dataLoaded ? (
+            {!dataLoaded ? (
                 <ActivityIndicator animating={true} size="large" />
             ) : (
-        <ScrollView indicatorStyle={styles.scrollView}>
-                <View>
-                    <Text style={styles.tb}>First name: {userFirstName}</Text>
-                    <Text style={styles.tb}>Last Name: {userLastName}</Text>
-                    <Text style={styles.tb}>Phone Number: {userPhoneNumber}</Text>
-              </View>
-        </ScrollView>
-                    )}
-      </View>
+                <ScrollView indicatorStyle={styles.scrollView}>
+                    <View>
+                        <Text style={styles.tb}>First name: {userFirstName}</Text>
+                        <Text style={styles.tb}>Last Name: {userLastName}</Text>
+                        <Text style={styles.tb}>Phone Number: {userPhoneNumber}</Text>
+                    </View>
+                    <Pressable style={styles.btn} onPress={updateProfileClicked}>
+                        <Text style={styles.btnLabel}>Update Profile</Text>
+                    </Pressable>
+                </ScrollView>
+            )}
+        </View>
     );
 }
 
@@ -60,35 +66,35 @@ export default Profile;
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-       padding: 20,
-       borderRadius:10,
-       justifyContent: 'center',
-   },
-   scrollView: {
-    marginHorizontal: 20,
-  },
+        flex: 1,
+        padding: 20,
+        borderRadius: 10,
+        justifyContent: 'center',
+    },
+    scrollView: {
+        marginHorizontal: 20,
+    },
     tb: {
-      width: "100%",
-      borderRadius: 5,
-      backgroundColor: "#efefef",
-      color: "#333",
-      fontWeight: "bold",
-      paddingHorizontal: 10,
-      paddingVertical: 25,
-      marginVertical: 10
-  },
+        width: "100%",
+        borderRadius: 5,
+        backgroundColor: "#efefef",
+        color: "#333",
+        fontWeight: "bold",
+        paddingHorizontal: 10,
+        paddingVertical: 25,
+        marginVertical: 10
+    },
     btn: {
-      borderRadius: 12,
-      paddingVertical: 16,
-      paddingHorizontal: 20,
-      marginVertical: 20,
-      backgroundColor : "green",
-  },
-  btnLabel: {
-      fontSize: 18,
-      textAlign: "center",
-      color: "black",
-      fontWeight:"bold"
-  }
-  });
+        borderRadius: 12,
+        paddingVertical: 16,
+        paddingHorizontal: 20,
+        marginVertical: 20,
+        backgroundColor: "green",
+    },
+    btnLabel: {
+        fontSize: 18,
+        textAlign: "center",
+        color: "black",
+        fontWeight: "bold"
+    }
+});
