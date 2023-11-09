@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Pressable, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
-import { doc, addDoc, collection } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { db } from "../controllers/firebaseConfig";
 const Booking = ({ navigation, route }) => {
-  const { restaurantData  } = route.params;
+  const { restaurantData } = route.params;
   console.log("selectedItem", restaurantData);
   // add some changes
   const [name, setName] = useState("");
@@ -29,11 +36,11 @@ const Booking = ({ navigation, route }) => {
         guestCount: numOfDiners,
         dineTime: dineTime,
         addnlNotes: notes,
-        restaurantName: restaurantData.name
+        restaurantName: restaurantData.name,
       };
       const docRef = await addDoc(collection(db, "bookings"), bookingData);
       console.log("Booking confirmed with document ID: ", docRef.id);
-      navigation.goBack()
+      navigation.goBack();
     } catch (e) {
       console.error("Error adding booking to db: ", e);
     }
