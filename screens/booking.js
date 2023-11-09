@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,11 +9,29 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "../controllers/firebaseConfig";
+import { addDoc, collection, doc, getDoc } from "firebase/firestore";
+import { db, auth } from "../controllers/firebaseConfig";
 const Booking = ({ navigation, route }) => {
   const { restaurantData } = route.params;
   console.log("selectedItem", restaurantData);
+
+  // user name retrieval 
+  useEffect(()=>{
+    retrieveFromDb()
+  },[])
+
+  const [userName, setUserName] = useState("");
+  const retrieveFromDb = async () => {
+    console.log(auth.currentUser.email)
+    try {
+        const docRef = doc(db, "user", auth.currentUser.email)
+        const docSnap = await getDoc(docRef)
+        const userInfo = docSnap.data()
+        setUserName(userInfo.firstName)
+    } catch (err) {
+        console.log(err)
+    }
+  }
   // add some changes
   const [name, setName] = useState("");
   const [numOfDiners, setNumOfDiners] = useState("");
