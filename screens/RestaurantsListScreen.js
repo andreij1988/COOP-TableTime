@@ -1,24 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  SafeAreaView,
-  Button,
-  Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import {
-  collection,
-  query,
-  where,
-  onSnapshot,
-  getDocs,
-} from "firebase/firestore";
-import { db, auth } from "../controllers/firebaseConfig";
+import { collection, query, getDocs } from "firebase/firestore";
+import { db } from "../controllers/firebaseConfig";
 import ListingsItem from "./ListingsItem";
 const RestaurantsListScreen = () => {
   const [userLocation, setUserLocation] = useState(null);
