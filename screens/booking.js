@@ -1,12 +1,39 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Pressable, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
-import { doc, addDoc, collection } from "firebase/firestore";
-import { db } from "../controllers/firebaseConfig";
+import { addDoc, collection, doc, getDoc } from "firebase/firestore";
+import { db, auth } from "../controllers/firebaseConfig";
+
+
 const Booking = ({ navigation, route }) => {
-  const { restaurantData  } = route.params;
+  const { restaurantData } = route.params;
   console.log("selectedItem", restaurantData);
+
+  // user name retrieval 
+  useEffect(()=>{
+    retrieveFromDb()
+  },[])
+
+  const [userName, setUserName] = useState("");
+  const retrieveFromDb = async () => {
+    console.log(auth.currentUser.email)
+    try {
+        const docRef = doc(db, "user", auth.currentUser.email)
+        const docSnap = await getDoc(docRef)
+        const userInfo = docSnap.data()
+        setUserName(userInfo.firstName)
+    } catch (err) {
+        console.log(err)
+    }
+  }
   // add some changes
   const [name, setName] = useState("");
   const [numOfDiners, setNumOfDiners] = useState("");
@@ -29,11 +56,11 @@ const Booking = ({ navigation, route }) => {
         guestCount: numOfDiners,
         dineTime: dineTime,
         addnlNotes: notes,
-        restaurantName: restaurantData.name
+        restaurantName: restaurantData.name,
       };
       const docRef = await addDoc(collection(db, "bookings"), bookingData);
       console.log("Booking confirmed with document ID: ", docRef.id);
-      navigation.goBack()
+      navigation.goBack();
     } catch (e) {
       console.error("Error adding booking to db: ", e);
     }
@@ -50,11 +77,12 @@ const Booking = ({ navigation, route }) => {
         >
           Booking for '{restaurantData.name}' restaurant
         </Text>
-        <Text style={styles.label}>What is your name?</Text>
+        <Text style={styles.label}>Booking under the name:</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter your name"
-          onChangeText={(text) => setName(text)}
+          onChangeText={(text) => setUserName(text)}
+          value={userName}
         />
         <Text style={styles.label}>How many people are expected to dine?</Text>
         <TextInput
