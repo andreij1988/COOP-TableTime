@@ -8,7 +8,7 @@ on:
 env:
   APP_CENTER_TOKEN: ${{ secrets.APP_CENTER_TOKEN_MYAPP_ANDROID_TEST  }}  
   APP_NAME: ${{ 'G1-TableTime/TableTime'  }}  
-  UPLOAD_FILE: ${{ './android/app/build/outputs/apk/debug/app-debug.apk'  }}  
+  UPLOAD_FILE: ${{ './android/app/build/outputs/apk/bundle/app-release.aab'  }}  
 
 jobs:
   build:
@@ -33,19 +33,45 @@ jobs:
         run: |
              cd ./packages/app-mobile/
              npm i -g corepack
-             yarn install             
+             yarn install      
+             
       - name: Build application
         run: |
              cd ./android
              chmod +x gradlew
-             ./gradlew assembleDebug             
+             ./gradlew assembleDebug
+
+      - name: Build Build Release apk
+        env:
+           SIGNING_KEY_STORE_PATH: ${{ secrets.SIGNING_KEY_STORE_PATH }}
+           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+        run: |
+             cd ./android
+             chmod +x gradlew
+             ./gradlew assembleRelease
+
+      - name: Build Build Release Bundle
+        env:
+           SIGNING_KEY_STORE_PATH: ${{ secrets.SIGNING_KEY_STORE_PATH }}
+           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+        run: |
+             cd ./android
+             chmod +x gradlew
+             ./gradlew bundleRelease
+             
       - name: Upload application
         uses: actions/upload-artifact@v2
         with:
-          name: app
+          paths: |
           path: ./android/app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 3
-
+                ./android/app/build/outputs/apk/release/app-release.apk
+                ./android/app/build/outputs/apk/bundle/app-release.aab
+                
+          
       - name: Upload to App Center
         uses: wzieba/AppCenter-Github-Action@v1
         with:
