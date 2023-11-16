@@ -50,13 +50,13 @@ const Booking = ({ navigation, route }) => {
 
   //function to add booking
   const onBookTablePress = async () => {
-    console.log("Name:", name);
+    console.log("Name:", userName);
     console.log("Number of Diners:", numOfDiners);
     console.log("Selected Option:", dineTime);
     console.log("Notes:", notes);
     try {
       const bookingData = {
-        guestName: name,
+        guestName: userName,
         guestCount: numOfDiners,
         dineTime: dineTime,
         addnlNotes: notes,
