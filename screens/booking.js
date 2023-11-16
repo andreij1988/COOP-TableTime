@@ -23,6 +23,8 @@ const Booking = ({ navigation, route }) => {
   },[])
 
   const [userName, setUserName] = useState("");
+
+  // retrieving data from db
   const retrieveFromDb = async () => {
     console.log(auth.currentUser.email)
     try {
@@ -34,25 +36,27 @@ const Booking = ({ navigation, route }) => {
         console.log(err)
     }
   }
-  // add some changes
+
+  // variables 
   const [name, setName] = useState("");
   const [numOfDiners, setNumOfDiners] = useState("");
   const [dineTime, setDineTime] = useState("option1"); // Default to the first option
   const [notes, setNotes] = useState("");
-  const options = [
-    { label: "7:30 PM", value: "7:30 PM" },
-    { label: "8:00 PM", value: "8:00 PM" },
-    { label: "8:30 PM", value: "8:30 PM" },
-  ];
+  // const options = [
+  //   { label: "7:30 PM", value: "7:30 PM" },
+  //   { label: "8:00 PM", value: "8:00 PM" },
+  //   { label: "8:30 PM", value: "8:30 PM" },
+  // ];
+
+  //function to add booking
   const onBookTablePress = async () => {
-    // Handle the form submission here
-    console.log("Name:", name);
+    console.log("Name:", userName);
     console.log("Number of Diners:", numOfDiners);
     console.log("Selected Option:", dineTime);
     console.log("Notes:", notes);
     try {
       const bookingData = {
-        guestName: name,
+        guestName: userName,
         guestCount: numOfDiners,
         dineTime: dineTime,
         addnlNotes: notes,
@@ -64,8 +68,62 @@ const Booking = ({ navigation, route }) => {
     } catch (e) {
       console.error("Error adding booking to db: ", e);
     }
-    // You can perform any necessary actions like sending data to a server or storing it locally.
+
   };
+
+  //function to convert hhmm format to hh:mm AM/PM format
+  const convertTimeFormat = (time) => {
+    const hours = parseInt(time.substring(0, 2));
+    const minutes = parseInt(time.substring(2));
+  
+    if (hours === 12 && minutes === 0) {
+      return "12:00 PM";
+    }
+    if (hours === 12 && minutes === 30) {
+      return "12:30 PM";
+    }
+  
+    const formattedHours = hours >= 12 ? hours - 12 : hours;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  
+    const period = hours >= 12 ? "PM" : "AM";
+  
+    return `${formattedHours}:${formattedMinutes} ${period}`;
+  };
+  
+  //function to generate time options based on open time and 1/2 hr intervals
+  const generateTimeOptions = (openTime) => {
+    const options = [];
+    let currentTime = openTime;
+  
+    while (currentTime !== '2330') { // Stop generating options at 11:30 PM
+      options.push({
+        label: convertTimeFormat(currentTime),
+        value: currentTime,
+      });
+  
+      // Add 30 minutes to the current time
+      const currentHours = parseInt(currentTime.substring(0, 2));
+      const currentMinutes = parseInt(currentTime.substring(2));
+  
+      // Update the currentTime variable
+      if (currentMinutes === 30) {
+        currentTime = `${currentHours + 1}00`;
+      } else {
+        currentTime = `${currentHours}30`;
+      }
+    }
+  
+    return options;
+  };
+  
+  // Convert the open time to a readable format
+  const openTimeFromDb = convertTimeFormat(restaurantData.openTime);
+  
+  // Generate time options
+  const options = generateTimeOptions(restaurantData.openTime);
+  
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -123,7 +181,11 @@ const Booking = ({ navigation, route }) => {
     </ScrollView>
   );
 };
+
+
 export default Booking;
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
