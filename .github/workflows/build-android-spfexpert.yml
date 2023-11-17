@@ -8,7 +8,7 @@ on:
 env:
   APP_CENTER_TOKEN: ${{ secrets.APP_CENTER_TOKEN_MYAPP_ANDROID_TEST  }}  
   APP_NAME: ${{ 'G1-TableTime/TableTime'  }}  
-  UPLOAD_FILE: ${{ './android/app/build/outputs/apk/bundle/app-release.aab'  }}  
+  UPLOAD_FILE: ${{ './android/app/build/outputs/apk/debug/app-release.aab'  }}  
 
 jobs:
   build:
@@ -64,10 +64,10 @@ jobs:
              ./gradlew bundleRelease
              
       - name: Upload application
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: apps
-          path:  ./android/app/build/outputs/apk/bundle/app-release.aab
+          path: ./android/app/build/outputs/apk/debug/app-release.aab
                 
           
       - name: Upload to App Center
