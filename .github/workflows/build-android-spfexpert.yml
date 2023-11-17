@@ -67,10 +67,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: apps
-          paths: |
-                ./android/app/build/outputs/apk/debug/app-debug.apk
-                ./android/app/build/outputs/apk/release/app-release.apk
-                ./android/app/build/outputs/apk/bundle/app-release.aab
+          path:  ./android/app/build/outputs/apk/bundle/app-release.aab
                 
           
       - name: Upload to App Center
