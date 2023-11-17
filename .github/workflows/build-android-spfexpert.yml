@@ -63,7 +63,7 @@ jobs:
              chmod +x gradlew
              ./gradlew bundleRelease
 
-    - name: Upload application Debug Apk
+      - name: Upload application Debug Apk
         uses: actions/upload-artifact@v2
         with:
           name: debug-apk
