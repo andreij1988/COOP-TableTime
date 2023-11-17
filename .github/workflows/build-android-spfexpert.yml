@@ -63,11 +63,18 @@ jobs:
              chmod +x gradlew
              ./gradlew bundleRelease
              
-      - name: Upload application
+      - name: Upload application Release Apk
         uses: actions/upload-artifact@v2
         with:
-          name: app
+          name: realease-apk
           path: ./android/app/build/outputs/apk/release
+          retention-days: 3
+
+      - name: Upload application Release Bundle
+        uses: actions/upload-artifact@v2
+        with:
+          name: realease-aab
+          path: ./android/app/build/outputs/bundle/release/
           retention-days: 3
                 
           
