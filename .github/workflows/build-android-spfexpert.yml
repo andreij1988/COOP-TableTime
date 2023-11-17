@@ -1,4 +1,4 @@
-name: "Build Android app"
+aname: "Build Android app"
 
 on:
   workflow_dispatch:
@@ -67,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app
-          path: ./android/app/build/outputs/apk/debug
+          path: ./android/app/build/outputs/apk/release
           retention-days: 3
                 
           
