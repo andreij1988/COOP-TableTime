@@ -35,22 +35,22 @@ jobs:
              npm i -g corepack
              yarn install      
              
-      - name: Build application
-        run: |
-             cd ./android
-             chmod +x gradlew
-             ./gradlew assembleDebug
+      # - name: Build application
+      #   run: |
+      #        cd ./android
+      #        chmod +x gradlew
+      #        ./gradlew assembleDebug
 
-      - name: Build Build Release apk
-        env:
-           SIGNING_KEY_STORE_PATH: ${{ secrets.SIGNING_KEY_STORE_PATH }}
-           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
-        run: |
-             cd ./android
-             chmod +x gradlew
-             ./gradlew assembleRelease
+      # - name: Build Build Release apk
+      #   env:
+      #      SIGNING_KEY_STORE_PATH: ${{ secrets.SIGNING_KEY_STORE_PATH }}
+      #      SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+      #      SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+      #      SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+      #   run: |
+      #        cd ./android
+      #        chmod +x gradlew
+      #        ./gradlew assembleRelease
 
       - name: Build Build Release Bundle
         env:
