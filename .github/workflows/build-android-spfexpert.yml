@@ -8,7 +8,7 @@ on:
 env:
   APP_CENTER_TOKEN: ${{ secrets.APP_CENTER_TOKEN_MYAPP_ANDROID_TEST  }}  
   APP_NAME: ${{ 'G1-TableTime/TableTime'  }}  
-  UPLOAD_FILE: ${{ './android/app/build/outputs/apk/bundle/app-release.aab'  }}  
+  UPLOAD_FILE: ${{ './android/app/build/outputs/apk/debug/app-release.aab'  }}  
 
 jobs:
   build:
@@ -66,17 +66,15 @@ jobs:
       - name: Upload application
         uses: actions/upload-artifact@v2
         with:
-          paths: |
-          path: ./android/app/build/outputs/apk/debug/app-debug.apk
-                ./android/app/build/outputs/apk/release/app-release.apk
-                ./android/app/build/outputs/apk/bundle/app-release.aab
+          name: app
+          path: ./android/app/build/outputs/apk/debug
+          retention-days: 3
                 
           
-      - name: Upload to App Center
-        uses: wzieba/AppCenter-Github-Action@v1
-        with:
-          appName: ${{ env.APP_NAME }}
-          token: ${{ env.APP_CENTER_TOKEN }}
-          group: Developer
-          file: ${{ env.UPLOAD_FILE }}
-          debug: true
+      # - name: Upload to App Center
+      #   uses: wzieba/AppCenter-Github-Action@v1
+      #   with:
+      #     appName: ${{ env.APP_NAME }}
+      #     token: ${{ env.APP_CENTER_TOKEN }}
+      #     group: Developer
+      #     file: ${{ env.UPLOAD_FILE }}
