@@ -64,9 +64,10 @@ jobs:
              ./gradlew bundleRelease
              
       - name: Upload application
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          path: |
+          name: apps
+          paths: |
                 ./android/app/build/outputs/apk/debug/app-debug.apk
                 ./android/app/build/outputs/apk/release/app-release.apk
                 ./android/app/build/outputs/apk/bundle/app-release.aab
