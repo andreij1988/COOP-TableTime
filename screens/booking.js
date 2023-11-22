@@ -6,12 +6,14 @@ import {
   StyleSheet,
   Pressable,
   ScrollView,
+  Button
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
 import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../controllers/firebaseConfig";
 
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Booking = ({ navigation, route }) => {
   const { restaurantData } = route.params;
@@ -42,12 +44,26 @@ const Booking = ({ navigation, route }) => {
   const [numOfDiners, setNumOfDiners] = useState("");
   const [dineTime, setDineTime] = useState("option1"); // Default to the first option
   const [notes, setNotes] = useState("");
-  // const options = [
-  //   { label: "7:30 PM", value: "7:30 PM" },
-  //   { label: "8:00 PM", value: "8:00 PM" },
-  //   { label: "8:30 PM", value: "8:30 PM" },
-  // ];
 
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(true);
+
+  const handleDateChange = (event, date) => {
+    if (date !== undefined) {
+      setSelectedDate(date);
+    }
+    setShowDatePicker(Platform.OS === 'ios');
+  };
+
+  // const showDatepicker = () => {
+  //   setShowDatePicker(true);
+  // };
+
+  // const handlePress = () => {
+  //   alert(`Selected Date: ${selectedDate}`);
+  // };
+
+  const formattedDate = selectedDate.toLocaleDateString();
   //function to add booking
   const onBookTablePress = async () => {
     console.log("Name:", userName);
@@ -59,6 +75,7 @@ const Booking = ({ navigation, route }) => {
         guestName: userName,
         guestCount: numOfDiners,
         dineTime: dineTime,
+        dineDate: formattedDate,
         addnlNotes: notes,
         restaurantName: restaurantData.name,
       };
@@ -149,6 +166,20 @@ const Booking = ({ navigation, route }) => {
           keyboardType="numeric"
           onChangeText={(text) => setNumOfDiners(text)}
         />
+
+        <Text style={styles.label}>Select Date</Text>
+          {/* <Button title="Select Date" onPress={showDatepicker} /> */}
+          {showDatePicker && (
+            <DateTimePicker
+              value={selectedDate}
+              mode="date"
+              display="default"
+              onChange={handleDateChange}
+              minimumDate={new Date()}
+              maximumDate={new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)}
+            />
+          )}
+      {/* <Button title="Submit" onPress={handlePress} /> */}
         <Text style={styles.label}>Select a time slot:</Text>
         <View style={styles.pickerContainer}>
           <Picker
