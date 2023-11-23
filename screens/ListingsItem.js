@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "../controllers/favoriteController";
+import { auth } from "../controllers/firebaseConfig";
 
 const ListingsItem = ({ item }) => {
   const navigation = useNavigation();
@@ -11,8 +16,14 @@ const ListingsItem = ({ item }) => {
     navigation.navigate("Booking", { restaurantData: item });
   };
 
-  const favoriteHandler = () => {
+  const favoriteHandler = async () => {
     setIsFavorited(!isFavorited);
+
+    if (!isFavorited === true) {
+      await addToFavorites({ ...item, user_id: auth.currentUser.email });
+    } else {
+      await removeFromFavorites(item?.id);
+    }
     // Implement logic to handle adding/removing from favorites based on isFavorited state
   };
 
@@ -20,21 +31,21 @@ const ListingsItem = ({ item }) => {
     <View style={styles.container}>
       <View style={styles.subContainer}>
         <Image source={{ uri: item.image }} style={styles.imgContainer} />
-        <View style={styles.textAndHeart}>
-          <View style={styles.textContainer}>
+        <View style={styles.textContainer}>
+          <View style={styles.titleAndHeart}>
             <Text style={styles.title}>
               {item.name || "Name not available"}
             </Text>
-            <Text style={styles.description}>
-              {item.description || "Description not available"}
-            </Text>
+            <Ionicons
+              name={isFavorited ? "heart" : "heart-outline"}
+              size={24}
+              color={isFavorited ? "green" : "black"}
+              onPress={favoriteHandler}
+            />
           </View>
-          <Ionicons
-            name={isFavorited ? "heart" : "heart-outline"}
-            size={24}
-            color={isFavorited ? "green" : "black"}
-            onPress={favoriteHandler}
-          />
+          <Text style={styles.description}>
+            {item.description || "Description not available"}
+          </Text>
         </View>
       </View>
       <View style={styles.detailsContainer}>
@@ -69,15 +80,15 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
   },
-  textAndHeart: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+  textContainer: {
     flex: 1,
     marginLeft: 10,
   },
-  textContainer: {
-    flex: 1,
+  titleAndHeart: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 8, // Add some space between title and description
   },
   title: {
     fontSize: 20,
