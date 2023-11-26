@@ -5,78 +5,78 @@ import {
     StyleSheet,
     FlatList,
 } from "react-native";
-import { collection, onSnapshot } from "firebase/firestore";
-import { db } from "../controllers/firebaseConfig";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db, auth } from "../controllers/firebaseConfig";
 
 const MyReservations = () => {
     const [reservationsData, setReservationsData] = useState([]);
+    const [emptyArray, setEmptyArray] = useState(true)
 
     useEffect(() => {
-        // const fetchReservations = async () => {
-        //     try {
-        //         const reservationsRef = collection(db, "bookings");
-        //         const querySnapshot = await getDocs(reservationsRef);
-        //         const reservationsDataArray = querySnapshot.docs.map((doc) =>
-        //             doc.data()
-        //         );
-        //         setReservationsData(reservationsDataArray);
-        //     } catch (error) {
-        //         console.error("Error fetching favourites:", error);
-        //     }
-        // };
-        // fetchReservations();
-        const reservationsRef = collection(db, "bookings");
-        const unsubscribe = onSnapshot(reservationsRef, (snapshot) => {
+        retrieveFromDb();
+    }, []);
+
+    const retrieveFromDb = async () => {
+        const q = query(collection(db, "bookings"), where('guestEmail', '==', auth.currentUser.email));
+        try {
+            const querySnapshot = await getDocs(q);
             const reservationsDataArray = [];
-            snapshot.forEach((doc) => {
+            querySnapshot.forEach((doc) => {
                 reservationsDataArray.push({
                     id: doc.id,
                     ...doc.data(),
                 });
             });
+            if (reservationsDataArray.length > 0) {
+                setEmptyArray(false)
+            }
             setReservationsData(reservationsDataArray);
-        });
-
-        return () => {
-            unsubscribe();
-        };
-    }, []);
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     return (
         <View style={styles.container}>
             {/* <Text>My Reservations</Text> */}
-            <FlatList
-                data={reservationsData}
-                keyExtractor={(item) => item.guestName}
-                renderItem={({ item }) => (
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            padding: 10,
-                        }}
-                    >
-                        <View style={{ padding: 10, width:"100%", borderColor: "blue", borderBottomWidth: 1 }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Restaurant: </Text>
-                                <Text style={{ fontSize: 16 }}>{item.restaurantName}</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Name: </Text>
-                                <Text style={{ fontSize: 16 }}>{item.guestName}</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Count: </Text>
-                                <Text style={{ fontSize: 16 }}>{item.guestCount}</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Time: </Text>
-                                <Text style={{ fontSize: 16 }}>{item.dineTime}</Text>
+            {emptyArray ? (
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>You have no reservations</Text>
+                </View>
+            ) : (
+                <FlatList
+                    data={reservationsData}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                padding: 10,
+                            }}
+                        >
+                            <View style={{ padding: 10, width: "100%", borderColor: "blue", borderBottomWidth: 1 }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Restaurant: </Text>
+                                    <Text style={{ fontSize: 16 }}>{item.restaurantName}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Name: </Text>
+                                    <Text style={{ fontSize: 16 }}>{item.guestName}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Count: </Text>
+                                    <Text style={{ fontSize: 16 }}>{item.guestCount}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Time: </Text>
+                                    <Text style={{ fontSize: 16 }}>{item.dineTime}</Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                )}
-            />
+                    )}
+                />
+            )}
         </View>
     );
 };

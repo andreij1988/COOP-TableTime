@@ -54,13 +54,10 @@ const TabScreen = ({ route, navigation }) => {
         tabBarInactiveTintColor: "red",
       })}
     >
-      <Tab.Screen
-        name="Restuarant Locations"
-        component={RestaurantsListScreen}
-      />
+      <Tab.Screen name="Restuarant Locations" component={RestaurantsListScreen} />
+      <Tab.Screen name="Favorites" component={FavoriteScreen} />
       <Tab.Screen name="My Reservations" component={MyReservations} />
       <Tab.Screen name="My Profile" component={Profile} />
-      <Tab.Screen name="Favorites" component={FavoriteScreen} />
     </Tab.Navigator>
   );
 };

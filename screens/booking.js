@@ -48,11 +48,13 @@ const Booking = ({ navigation, route }) => {
     try {
       const bookingData = {
         guestName: userName,
+        guestEmail: auth.currentUser.email,
         guestCount: numOfDiners,
         dineTime: dineTime,
         dineDate: selectedDate,
         addnlNotes: notes,
         restaurantName: restaurantData.name,
+        restaurantID: restaurantData.id
       };
       const docRef = await addDoc(collection(db, "bookings"), bookingData);
       console.log("Booking confirmed with document ID: ", docRef.id);
