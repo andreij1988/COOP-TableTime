@@ -40,19 +40,17 @@ jobs:
              cd ./android
              chmod +x gradlew
              ./gradlew assembleDebug
-             
+
       - name: Decode Keystore
-        env:
-           ENCODED_STRING: ${{ secrets.SIGNING_KEY_STORE_BASE64 }}
-           SIGNING_KEY_STORE_PATH: ${{ secrets.SIGNING_KEY_STORE_PATH }}
- 
-        run: |
-           echo $ENCODED_STRING > keystore-b64.txt
-           base64 -d keystore-b64.txt > $SIGNING_KEY_STORE_PATH
+        id: decode_keystore
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'keystore.jks'
+          fileDir: './android/app/'
+          encodedString: ${{ secrets.SIGNING_KEY_STORE_BASE64 }}
 
       - name: Build Build Release apk
         env:
-           SIGNING_KEY_STORE_PATH: ${{ secrets.SIGNING_KEY_STORE_PATH }}
            SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
            SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
            SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
@@ -63,7 +61,6 @@ jobs:
 
       - name: Build Build Release Bundle
         env:
-           SIGNING_KEY_STORE_PATH: ${{ secrets.SIGNING_KEY_STORE_PATH }}
            SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
            SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
            SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
