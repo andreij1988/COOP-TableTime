@@ -53,6 +53,12 @@ const SignUp = ({ navigation, route }) => {
         phone: userPhoneNumber
     }
       await setDoc(doc(db, "user", userName), profileDataToAdd)
+      setUserFirstName("")
+      setUserLastName("")
+      setUserName("")
+      setUserPassword("")
+      setUserConfirmPassword("")
+      setUserPhoneNumber("")
       navigation.navigate('TabScreen');
     }
     catch (err) {

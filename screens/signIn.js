@@ -25,6 +25,8 @@ const SignIn = ({ navigation, route }) => {
                 console.log(userInfo)
                 const fullName = `${userInfo.lastName}, ${userInfo.firstName}` 
             navigation.navigate('TabScreen', {screen: "Restuarant Locations", params: {name: fullName}});
+            setUserName("")
+            setUserPassword("")
             // alert(`Welcoime`)
             }
         } catch (err) {
