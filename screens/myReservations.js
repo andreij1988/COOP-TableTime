@@ -4,11 +4,13 @@ import {
     Text,
     StyleSheet,
     FlatList,
+    TouchableOpacity,
+    Button
 } from "react-native";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db, auth } from "../controllers/firebaseConfig";
 
-const MyReservations = () => {
+const MyReservations = ({ navigation, route }) => {
     const [reservationsData, setReservationsData] = useState([]);
     const [emptyArray, setEmptyArray] = useState(true)
 
@@ -18,6 +20,7 @@ const MyReservations = () => {
 
     const retrieveFromDb = async () => {
         const q = query(collection(db, "bookings"), where('guestEmail', '==', auth.currentUser.email));
+        setEmptyArray(true)
         try {
             const querySnapshot = await getDocs(q);
             const reservationsDataArray = [];
@@ -36,8 +39,13 @@ const MyReservations = () => {
         }
     }
 
+    const updateReservation = () => {
+        retrieveFromDb()
+    }
+
     return (
         <View style={styles.container}>
+            <Button title="Update Reservations" onPress={updateReservation} color={"green"} />
             {/* <Text>My Reservations</Text> */}
             {emptyArray ? (
                 <View style={{ alignItems: 'center' }}>
@@ -46,6 +54,7 @@ const MyReservations = () => {
             ) : (
                 <FlatList
                     data={reservationsData}
+                    onPress={() => test}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
                         <View
@@ -55,29 +64,36 @@ const MyReservations = () => {
                                 padding: 10,
                             }}
                         >
-                            <View style={{ padding: 10, width: "100%", borderColor: "blue", borderBottomWidth: 1 }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Restaurant: </Text>
-                                    <Text style={{ fontSize: 16 }}>{item.restaurantName}</Text>
+                            <TouchableOpacity onPress={() => { navigation.navigate("Booking Details", { bookingData: item });}}>
+                                <View style={{ padding: 10, width: "100%", borderColor: "blue", borderBottomWidth: 1 }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Restaurant: </Text>
+                                        <Text style={{ fontSize: 16 }}>{item.restaurantName}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Name: </Text>
+                                        <Text style={{ fontSize: 16 }}>{item.guestName}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Count: </Text>
+                                        <Text style={{ fontSize: 16 }}>{item.guestCount}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Date: </Text>
+                                        <Text style={{ fontSize: 16 }}>{item.dineDate}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Time: </Text>
+                                        <Text style={{ fontSize: 16 }}>{item.dineTime}</Text>
+                                    </View>
                                 </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Name: </Text>
-                                    <Text style={{ fontSize: 16 }}>{item.guestName}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Count: </Text>
-                                    <Text style={{ fontSize: 16 }}>{item.guestCount}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Time: </Text>
-                                    <Text style={{ fontSize: 16 }}>{item.dineTime}</Text>
-                                </View>
-                            </View>
+                            </TouchableOpacity>
                         </View>
-                    )}
+                    )
+                    }
                 />
             )}
-        </View>
+        </View >
     );
 };
 

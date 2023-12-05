@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react"
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,9 +6,14 @@ import {
   addToFavorites,
   removeFromFavorites,
 } from "../controllers/favoriteController";
-import { auth } from "../controllers/firebaseConfig";
+import {
+  doc,
+  getDoc
+} from "firebase/firestore";
+import { db, auth } from "../controllers/firebaseConfig";
 
 const ListingsItem = ({ item }) => {
+
   const navigation = useNavigation();
   const [isFavorited, setIsFavorited] = useState(false);
 
@@ -18,7 +23,6 @@ const ListingsItem = ({ item }) => {
 
   const favoriteHandler = async () => {
     setIsFavorited(!isFavorited);
-
     if (!isFavorited === true) {
       await addToFavorites({ ...item, user_id: auth.currentUser.email });
     } else {

@@ -9,6 +9,8 @@ import SignUp from './screens/signUp';
 import TabScreen from './screens/TabScreen';
 import booking from './screens/booking'
 import UpdateProfile from './screens/UpdateProfile'
+import MyReservationsDetails from './screens/myReservationsDetails';
+import MyFavoriteDetails from './screens/myFavoriteDetails';
 
 const Stack = createStackNavigator();
 
@@ -71,6 +73,30 @@ export default function App() {
           >
           </Stack.Screen>
           <Stack.Screen component={UpdateProfile} name="Update Profile"
+           options={{
+            headerStyle: {
+              backgroundColor: '#E69F00',
+            },
+            headerTintColor: 'black',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+          >
+          </Stack.Screen>
+          <Stack.Screen component={MyReservationsDetails} name="Booking Details"
+           options={{
+            headerStyle: {
+              backgroundColor: '#E69F00',
+            },
+            headerTintColor: 'black',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+          >
+          </Stack.Screen>
+          <Stack.Screen component={MyFavoriteDetails} name="Favorite Restuarant"
            options={{
             headerStyle: {
               backgroundColor: '#E69F00',

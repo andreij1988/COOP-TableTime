@@ -16,7 +16,6 @@ const SignUp = ({ navigation, route }) => {
   const [userPassword, setUserPassword] = useState("")
   const [userConfirmPassword, setUserConfirmPassword] = useState("")
   const [userPhoneNumber, setUserPhoneNumber] = useState("")
-
   const onSignUpClicked = async () =>{
     console.log(userName)
     console.log(userPassword)
@@ -50,16 +49,18 @@ const SignUp = ({ navigation, route }) => {
       const profileDataToAdd = {
         firstName: userFirstName,
         lastName: userLastName,
-        phone: userPhoneNumber
+        phone: userPhoneNumber,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Question_mark_alternate.svg/1577px-Question_mark_alternate.svg.png"
     }
       await setDoc(doc(db, "user", userName), profileDataToAdd)
+      const fullName = `${userLastName}, ${userFirstName}` 
       setUserFirstName("")
       setUserLastName("")
       setUserName("")
       setUserPassword("")
       setUserConfirmPassword("")
       setUserPhoneNumber("")
-      navigation.navigate('TabScreen');
+      navigation.navigate('TabScreen', {screen: "Restuarant Locations", params: {name: fullName}});
     }
     catch (err) {
       let dbError = String(err)

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, Pressable, TextInput, ImageBackground, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Pressable, TextInput, ImageBackground, ScrollView, ActivityIndicator, Image } from 'react-native';
 import { useState, useEffect } from "react"
 
 import { db, auth } from "../controllers/firebaseConfig";
@@ -18,6 +18,7 @@ const Profile = ({ navigation, route }) => {
     const [userFirstName, setUserFirstName] = useState("f")
     const [userLastName, setUserLastName] = useState("l")
     const [userPhoneNumber, setUserPhoneNumber] = useState("p")
+    const [userPicture, setUserPicture] = useState("")
     const [dataLoaded, setDataLoaded] = useState(false);
 
     const [check, setCheck] = useState(true)
@@ -33,6 +34,7 @@ const Profile = ({ navigation, route }) => {
             setUserFirstName(userInfo.firstName)
             setUserLastName(userInfo.lastName)
             setUserPhoneNumber(userInfo.phone)
+            setUserPicture(userInfo.image)
             setDataLoaded(true)
         } catch (err) {
             console.log(err)
@@ -48,6 +50,9 @@ const Profile = ({ navigation, route }) => {
                 <ActivityIndicator animating={true} size="large" />
             ) : (
                 <ScrollView indicatorStyle={styles.scrollView}>
+                               <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' }}>
+           <Image source={{ uri: userPicture }} style={styles.imgContainer} />
+            </View>
                     <View>
                         <Text style={styles.tb}>First name: {userFirstName}</Text>
                         <Text style={styles.tb}>Last Name: {userLastName}</Text>
@@ -74,6 +79,14 @@ const styles = StyleSheet.create({
     scrollView: {
         marginHorizontal: 20,
     },
+    imgContainer: {
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: "#666665",
+        width: 120,
+        height: 120,
+        resizeMode: 'contain'
+      },
     tb: {
         width: "100%",
         borderRadius: 5,

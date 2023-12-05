@@ -17,8 +17,13 @@ export const addToFavorites = async (restaurantData) => {
     ); // Assuming 'name' is unique for each restaurant
 
     // Set the restaurant data to the specified document
-    await setDoc(userFavoritesRef, restaurantData);
-
+    const favoriteRestuarant = {
+      restaurantName: restaurantData.name,
+      restaurantAddress : restaurantData.address,
+      restaurantFood: restaurantData.food,
+      restuarantPhone: restaurantData.phone
+    };
+    await setDoc(userFavoritesRef, favoriteRestuarant);
     console.log("Restaurant added to favorites successfully!");
   } catch (error) {
     console.error("Error adding restaurant to favorites: ", error);
