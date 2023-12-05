@@ -7,6 +7,7 @@ import {
   Pressable,
   ScrollView,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
@@ -40,9 +41,24 @@ const Booking = ({ navigation, route }) => {
   };
 
   const onBookTablePress = async () => {
+
+    if(!userName) {
+      Alert.alert("Validation Error", "Please enter user name");
+      return;
+    }
+    if(!numOfDiners) {
+      Alert.alert("Validation Error", "Please enter number of diners");
+      return;
+    }
+    if(!dineTime || !selectedDate) {
+      Alert.alert("Validation Error", "Please choose the date and time");
+      return;
+    }
+
     console.log("Name:", userName);
     console.log("Number of Diners:", numOfDiners);
-    console.log("Selected Option:", dineTime);
+    console.log("Selected dine date:", selectedDate);
+    console.log("Selected dine time:", dineTime);
     console.log("Notes:", notes);
 
     // Check if selected date is today
@@ -54,7 +70,6 @@ const Booking = ({ navigation, route }) => {
 
     if (!isToday || !isFutureTime) {
       console.error("Invalid booking date/time");
-      // Handle error or display a message to the user
       return;
     }
 
