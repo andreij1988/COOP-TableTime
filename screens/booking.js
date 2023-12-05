@@ -50,10 +50,10 @@ const Booking = ({ navigation, route }) => {
       Alert.alert("Validation Error", "Please enter number of diners");
       return;
     }
-    if(!dineTime || !selectedDate) {
-      Alert.alert("Validation Error", "Please choose the date and time");
-      return;
-    }
+    // if(!dineTime || !selectedDate) {
+    //   Alert.alert("Validation Error", "Please choose the date and time");
+    //   return;
+    // }
 
     console.log("Name:", userName);
     console.log("Number of Diners:", numOfDiners);
@@ -61,17 +61,17 @@ const Booking = ({ navigation, route }) => {
     console.log("Selected dine time:", dineTime);
     console.log("Notes:", notes);
 
-    // Check if selected date is today
-    const isToday = selectedDate === new Date().toISOString().split('T')[0];
+    // // Check if selected date is today
+    // const isToday = selectedDate === new Date().toISOString().split('T')[0];
 
-    // Check if selected time is in the future
-    const currentTimeString = `${new Date().getHours()}${new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : new Date().getMinutes()}`;
-    const isFutureTime = isToday && dineTime >= currentTimeString;
+    // // Check if selected time is in the future
+    // const currentTimeString = `${new Date().getHours()}${new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : new Date().getMinutes()}`;
+    // const isFutureTime = isToday && dineTime >= currentTimeString;
 
-    if (!isToday || !isFutureTime) {
-      console.error("Invalid booking date/time");
-      return;
-    }
+    // if (!isToday || !isFutureTime) {
+    //   console.error("Invalid booking date/time");
+    //   return;
+    // }
 
     try {
       const bookingData = {
