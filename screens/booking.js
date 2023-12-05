@@ -18,7 +18,6 @@ import { Calendar } from "react-native-calendars";
 const Booking = ({ navigation, route }) => {
   const { restaurantData } = route.params;
 
-  // user name retrieval
   useEffect(() => {
     retrieveFromDb();
   }, []);
@@ -45,6 +44,20 @@ const Booking = ({ navigation, route }) => {
     console.log("Number of Diners:", numOfDiners);
     console.log("Selected Option:", dineTime);
     console.log("Notes:", notes);
+
+    // Check if selected date is today
+    const isToday = selectedDate === new Date().toISOString().split('T')[0];
+
+    // Check if selected time is in the future
+    const currentTimeString = `${new Date().getHours()}${new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : new Date().getMinutes()}`;
+    const isFutureTime = isToday && dineTime >= currentTimeString;
+
+    if (!isToday || !isFutureTime) {
+      console.error("Invalid booking date/time");
+      // Handle error or display a message to the user
+      return;
+    }
+
     try {
       const bookingData = {
         guestName: userName,
@@ -94,15 +107,22 @@ const Booking = ({ navigation, route }) => {
     return `${formattedHours}:${formattedMinutes} ${period}`;
   };
 
-  const generateTimeOptions = (openTime) => {
+  const generateTimeOptions = (openTime, selectedDate) => {
     const options = [];
     let currentTime = openTime;
 
+    const now = new Date();
+    const currentHours = now.getHours();
+    const currentMinutes = now.getMinutes();
+    const currentTimeString = `${currentHours}${currentMinutes < 10 ? `0${currentMinutes}` : currentMinutes}`;
+
     while (currentTime !== "2330") {
-      options.push({
-        label: convertTimeFormat(currentTime),
-        value: currentTime,
-      });
+      if ((selectedDate === new Date().toISOString().split('T')[0] && currentTime >= currentTimeString) || selectedDate !== new Date().toISOString().split('T')[0]) {
+        options.push({
+          label: convertTimeFormat(currentTime),
+          value: currentTime,
+        });
+      }
 
       const currentHours = parseInt(currentTime.substring(0, 2));
       const currentMinutes = parseInt(currentTime.substring(2));
@@ -118,7 +138,7 @@ const Booking = ({ navigation, route }) => {
   };
 
   const openTimeFromDb = convertTimeFormat(restaurantData.openTime);
-  const options = generateTimeOptions(restaurantData.openTime);
+  const options = generateTimeOptions(restaurantData.openTime, selectedDate);
 
   return (
     <ScrollView>
