@@ -102,7 +102,7 @@ const UpdateProfile = ({ navigation, route }) => {
       await updatePassword(auth.currentUser, userPassword).then(() => {
         console.log("updated")
       }).catch((error) => {
-        console.log("Badd password")
+        console.log("Bad password")
       });
       navigation.goBack()
     }

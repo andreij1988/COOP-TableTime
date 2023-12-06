@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, Pressable,ScrollView } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import { collection, query, getDocs } from "firebase/firestore";
+import { collection, query, getDocs,where } from "firebase/firestore";
 import { db } from "../controllers/firebaseConfig";
 import ListingsItem from "./ListingsItem";
+import { Picker } from "@react-native-picker/picker";
+
 const RestaurantsListScreen = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [listings, setListings] = useState([]);
   const [selectedListing, setSelectedListing] = useState(null);
   const [loading, setLoading] = useState([]);
+  const [foodType, setFoodType] = useState("All Types");
+
+  const foodSelected = ['All Types' ,'Mixed' ,'Italian','Indian' ,'Middle East', 'Mexican']
+
   useEffect(() => {
     getUserLocation();
     getRestuarantLocation();
   }, []);
 
   const getRestuarantLocation = async () => {
+    console.log(foodType)
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       alert(`Permission to access location was denied`);
@@ -24,7 +31,13 @@ const RestaurantsListScreen = () => {
     } else {
       console.log("Granted");
     }
-    const restList = query(collection(db, "resturants"));
+    let restList = ""
+    if (foodType === "All Types"){
+      restList = query(collection(db, "resturants"));
+    }
+    else {
+      restList = query(collection(db, "resturants"), where ("food", "==", foodType));
+    }
     try {
       let tempLD = [];
       const querySnapshot = await getDocs(restList);
@@ -81,8 +94,25 @@ const RestaurantsListScreen = () => {
   const handleMarkerPress = (item) => {
     setSelectedListing(item);
   };
+
+  const handleValueChange=(itemValue, itemIndex) =>setFoodType(itemValue)
+
   return (
     <SafeAreaView style={styles.container}>
+            <ScrollView indicatorStyle={styles.scrollView}>
+      <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
+      <Picker
+        style={styles.picker}
+        selectedValue={foodType}
+        onValueChange={handleValueChange}>
+          {
+            foodSelected.map(foodType=> <Picker.Item key={foodType} label={foodType} value={foodType}/>)
+          }
+      </Picker>
+        <Pressable style={styles.btnSearch} onPress={getRestuarantLocation}>
+          <Text style={styles.btnLabel}>Search for Food</Text>
+        </Pressable>
+      </View>
       <View style={styles.mapContainer}>
         {userLocation && (
           <MapView style={styles.map} initialRegion={userLocation}>
@@ -120,6 +150,7 @@ const RestaurantsListScreen = () => {
         </View> */}
         {selectedListing && <ListingsItem item={selectedListing} />}
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -150,6 +181,29 @@ const styles = StyleSheet.create({
     color: "white",
     // fontWeight: "bold",
     fontSize: 12,
+  },
+  btnLabel: {
+    fontSize: 18,
+    textAlign: "center",
+    color: "black",
+    fontWeight: "bold"
+  },
+  btnSearch: {
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    marginVertical: 20,
+    backgroundColor: "gold",
+  },  
+  picker: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    backgroundColor: "#efefef",
+    borderRadius: 5,
+    marginBottom: 15,
+  },
+  scrollView: {
+    marginHorizontal: 20,
   },
 });
 export default RestaurantsListScreen;

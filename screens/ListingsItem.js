@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -33,35 +33,36 @@ const ListingsItem = ({ item }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Image source={{ uri: item.image }} style={styles.imgContainer} />
-        <View style={styles.textContainer}>
-          <View style={styles.titleAndHeart}>
-            <Text style={styles.title}>
-              {item.name || "Name not available"}
+        <View style={styles.subContainer}>
+          <Image source={{ uri: item.image }} style={styles.imgContainer} />
+          <View style={styles.textContainer}>
+            <View style={styles.titleAndHeart}>
+              <Text style={styles.title}>
+                {item.name || "Name not available"}
+              </Text>
+              <Ionicons
+                name={isFavorited ? "heart" : "heart-outline"}
+                size={24}
+                color={isFavorited ? "green" : "black"}
+                onPress={favoriteHandler}
+              />
+            </View>
+            <Text style={styles.description}>
+              {item.description || "Description not available"}
             </Text>
-            <Ionicons
-              name={isFavorited ? "heart" : "heart-outline"}
-              size={24}
-              color={isFavorited ? "green" : "black"}
-              onPress={favoriteHandler}
-            />
           </View>
-          <Text style={styles.description}>
-            {item.description || "Description not available"}
-          </Text>
         </View>
-      </View>
-      <View style={styles.detailsContainer}>
-        <Text style={styles.details}>{`Address: ${item.address || "NA"}`}</Text>
-        <Text style={styles.details}>{`Food: ${item.food || "NA"}`}</Text>
-        <Text style={styles.details}>{`Phone: ${item.phone || "NA"}`}</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Pressable onPress={clickHandler} style={styles.bookBtn}>
-          <Text style={styles.btnLabel}>BOOK</Text>
-        </Pressable>
-      </View>
+        <View style={styles.detailsContainer}>
+          <Text style={styles.details}>{`Address: ${item.address || "NA"}`}</Text>
+          <Text style={styles.details}>{`Food: ${item.food || "NA"}`}</Text>
+          <Text style={styles.details}>{`Phone: ${item.phone || "NA"}`}</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable onPress={clickHandler} style={styles.bookBtn}>
+            <Text style={styles.btnLabel}>BOOK</Text>
+          </Pressable>
+        </View>
+
     </View>
   );
 };

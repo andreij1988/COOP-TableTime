@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
-import { addDoc, collection, doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, where, getDocs, query } from "firebase/firestore";
 import { db, auth } from "../controllers/firebaseConfig";
 
 import { Calendar } from "react-native-calendars";
@@ -41,12 +41,13 @@ const Booking = ({ navigation, route }) => {
   };
 
   const onBookTablePress = async () => {
+    let emptyArray = true
 
-    if(!userName) {
+    if (!userName) {
       Alert.alert("Validation Error", "Please enter user name");
       return;
     }
-    if(!numOfDiners) {
+    if (!numOfDiners) {
       Alert.alert("Validation Error", "Please enter number of diners");
       return;
     }
@@ -84,9 +85,28 @@ const Booking = ({ navigation, route }) => {
         restaurantName: restaurantData.name,
         restaurantID: restaurantData.id
       };
-      const docRef = await addDoc(collection(db, "bookings"), bookingData);
-      console.log("Booking confirmed with document ID: ", docRef.id);
-      navigation.goBack();
+      const checkBookRed = query(collection(db, "bookings"), where("dineDate", "==", selectedDate), where("dineTime", "==", dineTime), where("restaurantID", "==", restaurantData.id));
+      const querySnapshot = await getDocs(checkBookRed);
+      const bookingDataArray = [];
+      querySnapshot.forEach((doc) => {
+        bookingDataArray.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+      console.log(bookingDataArray.length)
+      if (bookingDataArray.length > 0) {
+        emptyArray = false
+        console.log(emptyArray)
+      }
+      console.log(emptyArray)
+      if (emptyArray === true) {
+        const docRef = await addDoc(collection(db, "bookings"), bookingData);
+        console.log("Booking confirmed with document ID: ", docRef.id);
+        navigation.goBack();
+      } else {
+        alert(`You have already booked at this date and time`)
+      }
     } catch (e) {
       console.error("Error adding booking to db: ", e);
     }
@@ -194,8 +214,8 @@ const Booking = ({ navigation, route }) => {
                 selectedColor: "blue",
               },
             }}
-            minDate={new Date()}
-            maxDate={new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)}
+            minDate={String(new Date())}
+            maxDate={String(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))}
           />
         )}
 
