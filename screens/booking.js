@@ -172,6 +172,10 @@ const Booking = ({ navigation, route }) => {
     return options;
   };
 
+  const onDiscardClicked = () => {
+    navigation.goBack()
+  }
+
   const openTimeFromDb = convertTimeFormat(restaurantData.openTime);
   const options = generateTimeOptions(restaurantData.openTime, selectedDate);
 
@@ -246,7 +250,9 @@ const Booking = ({ navigation, route }) => {
         <Pressable style={styles.button} onPress={onBookTablePress}>
           <Text style={styles.buttonText}>Book Table</Text>
         </Pressable>
-
+        <Pressable style={styles.btnDis} onPress={onDiscardClicked}>
+              <Text style={styles.buttonText}>Go Back</Text>
+            </Pressable>
         <StatusBar style="auto" />
       </View>
     </ScrollView>
@@ -256,9 +262,8 @@ const Booking = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     padding: 20,
-    alignItems: "stretch",
+    borderRadius: 10
   },
   heading: {
     fontSize: 28,
@@ -304,15 +309,24 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   button: {
-    borderWidth: 1,
-    borderColor: "#141D21",
-    borderRadius: 8,
+    borderRadius: 12,
     paddingVertical: 16,
-    marginVertical: 10,
+    paddingHorizontal: 20,
+    marginVertical: 20,
+    backgroundColor: "green",
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 18,
     textAlign: "center",
+    color: "black",
+    fontWeight: "bold"
+  },
+  btnDis: {
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    marginVertical: 20,
+    backgroundColor: "gold",
   },
 });
 

@@ -26,8 +26,6 @@ const FavoriteScreen = ({navigation, route} ) => {
         snapshot.forEach((doc) => {
           favorites.push({ id: doc.id, ...doc.data() });
         });
-
-        console.log("Fetched favorites successfully!", favorites);
         if (favorites.length > 0) {
           setEmptyArray(false)
         }

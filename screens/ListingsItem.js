@@ -22,11 +22,14 @@ const ListingsItem = ({ item }) => {
   };
 
   const favoriteHandler = async () => {
-    setIsFavorited(!isFavorited);
+    setIsFavorited(item.favorite);
+    console.log(item.favorite)
     if (!isFavorited === true) {
       await addToFavorites({ ...item, user_id: auth.currentUser.email });
+      item.favorite = true
     } else {
       await removeFromFavorites(item?.id);
+      item.favorite = false
     }
     // Implement logic to handle adding/removing from favorites based on isFavorited state
   };
@@ -41,9 +44,9 @@ const ListingsItem = ({ item }) => {
                 {item.name || "Name not available"}
               </Text>
               <Ionicons
-                name={isFavorited ? "heart" : "heart-outline"}
+                name={item.favorite ? "heart" : "heart-outline"}
                 size={24}
-                color={isFavorited ? "green" : "black"}
+                color={item.favorite ? "green" : "black"}
                 onPress={favoriteHandler}
               />
             </View>

@@ -3,8 +3,8 @@ import { StatusBar } from "expo-status-bar";
 import { View, Text, StyleSheet, SafeAreaView, Pressable,ScrollView } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import { collection, query, getDocs,where } from "firebase/firestore";
-import { db } from "../controllers/firebaseConfig";
+import { collection, query, getDocs,where, getDoc, doc } from "firebase/firestore";
+import { db, auth } from "../controllers/firebaseConfig";
 import ListingsItem from "./ListingsItem";
 import { Picker } from "@react-native-picker/picker";
 
@@ -44,10 +44,21 @@ const RestaurantsListScreen = () => {
       querySnapshot.forEach((doc) => {
         tempLD.push({
           id: doc.id,
+          favorite : false,
           ...doc.data(),
         });
       });
       let listingData = [];
+
+      for (let i = 0; i < tempLD.length; i++){
+        const docRef = doc(db, `user/${auth.currentUser.email}/favorites`, tempLD[i].id)
+        const docSnap = await getDoc(docRef)
+        console.log(docSnap.data())
+        if (docSnap.data() != undefined){
+          tempLD[i].favorite = true
+        }
+        console.log(tempLD[i])
+      }
       for (let i = 0; i < tempLD.length; i++) {
         const geocodedLocation = await Location.geocodeAsync(tempLD[i].address);
         const result = geocodedLocation[0];
